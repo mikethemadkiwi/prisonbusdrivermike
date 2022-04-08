@@ -55,7 +55,7 @@ function addBusPZones(depot, radius, useZ, debug, options)
 end
 --
 function CallBusAtZone(zone)
-	print(zone)
+	print(zone.name)
 end
 --------------INIT--------------
 Citizen.CreateThread(function()
