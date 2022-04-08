@@ -1,3 +1,4 @@
+pZoneDebug = true
 pZones = {}
 PBusSigns = {}
 PBUSDepot = {}
@@ -28,12 +29,12 @@ PrisonDepot = {
     }
 }
 function addBusPZones(depot, radius, useZ, debug, options)
-    -- table.insert(pZones, CircleZone:Create(vector3(depot.zones.menu.x, depot.zones.menu.y, depot.zones.menu.z), radius, {
-    --     name=depot.name,
-    --     useZ=useZ,
-    --     data=depot,
-    --     debugPoly=polydebug
-    -- }))    
+    table.insert(pZones, CircleZone:Create(vector3(depot.zones.menu.x, depot.zones.menu.y, depot.zones.menu.z), radius, {
+        name=depot.name,
+        useZ=useZ,
+        data=depot,
+        debugPoly=debug
+    }))    
 end
 --------------INIT--------------
 Citizen.CreateThread(function()
@@ -42,7 +43,7 @@ Citizen.CreateThread(function()
 		if NetworkIsPlayerActive(PlayerId()) then
 			for j=1, #PrisonDepot do
 				-- add polyzone for bus		
-				addBusPZones(PBUSDepot[j], 2.0, false, true, {})
+				addBusPZones(PBUSDepot[j], 1.0, false, pZoneDebug, {})
 				-- create bus sign
 				PBusSigns[PrisonDepot[j].uid] = CreateObject(-1022684418, PrisonDepot[j].zones.menu.x, PrisonDepot[j].zones.menu.y, PrisonDepot[j].zones.menu.z, false, false, false)					
 			end			
