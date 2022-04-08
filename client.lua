@@ -29,6 +29,21 @@ PrisonDepot = {
         blip = {sprite = 58, color = 8, scale = 0.5}
     }
 }
+--
+function drawOnScreen2D(text, r, g, b, a, x, y, scale)
+    SetTextFont(4)
+    SetTextProportional(1)
+    SetTextScale(scale, scale)
+    SetTextColour(r, g, b, a)
+    SetTextDropShadow(0, 0, 0, 0, 255)
+    SetTextEdge(1, 0, 0, 0, 255)
+    SetTextDropShadow()
+    SetTextOutline()    
+    BeginTextCommandDisplayText("STRING")
+    AddTextComponentSubstringPlayerName(text)
+    EndTextCommandDisplayText(x, y)
+end
+--
 function addBusPZones(depot, radius, useZ, debug, options)
     table.insert(pZones, CircleZone:Create(vector3(depot.zones.menu.x, depot.zones.menu.y, depot.zones.menu.z), radius, {
         name=depot.name,
@@ -52,19 +67,8 @@ Citizen.CreateThread(function()
 				if zone then
 					if isPointInside then
 						IsInPbusZone = true
-						-- currentZone = zone.data
-						-- currentRoutes = zone.data.routes       
-						-- SendNUIMessage({
-						-- 	zone = zone.data,
-						-- 	depots = Depot
-						-- })
 					  else
 						IsInPbusZone = false
-						-- currentZone = nil
-						-- currentRoutes = nil
-						-- SendNUIMessage({
-						-- 	close = true
-						-- })
 					  end
 				end
 			end)		
@@ -79,4 +83,13 @@ AddEventHandler("onResourceStop", function(resourceName)
             DeleteObject(PBusSigns[j])        
         end
     end
+end)
+--
+Citizen.CreateThread(function()
+	while true do
+		Citizen.Wait(0)		
+		if IsInPbusZone then
+			drawOnScreen2D('~o~ Isin Zone: ~g~ true', 255, 255, 255, 255, 0.05, 0.15, 0.3)
+		end
+	end
 end)
