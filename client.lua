@@ -66,7 +66,7 @@ Citizen.CreateThread(function()
 		if NetworkIsPlayerActive(PlayerId()) then
 			for j=1, #PrisonDepot do
 				addBusPZones(PrisonDepot[j], 1.0, false, pZoneDebug, {})
-				PBusSigns[PrisonDepot[j].uid] = CreateObject(-1022684418, PrisonDepot[j].zones.menu.x, PrisonDepot[j].zones.menu.y, PrisonDepot[j].zones.menu.z, false, false, false)					
+				PBusSigns[j] = CreateObject(-1022684418, PrisonDepot[j].zones.menu.x, PrisonDepot[j].zones.menu.y, PrisonDepot[j].zones.menu.z, false, false, false)					
 			end
 			--
 			DepotPolyList = ComboZone:Create(pZones, {name="DepotPolyList", debugPoly=polydebug})
