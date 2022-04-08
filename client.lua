@@ -55,7 +55,34 @@ function addBusPZones(depot, radius, useZ, debug, options)
 end
 --
 function CallBusAtZone(zone)
-	print(zone.name)
+	local zData = zone.data
+	print('Bus requested at ['..zData.uid..']')
+	TriggerServerEvent('pbdm:requestbus', zData)
+end
+--
+function spawnBusDriver(Depot, cb)
+    Citizen.CreateThread(function()
+        RequestModel(GetHashKey('u_m_m_promourn_01'))	
+        while not HasModelLoaded(GetHashKey('u_m_m_promourn_01')) do
+            Wait(1)
+        end
+        activeDriver = CreatePed(5, 'u_m_m_promourn_01', Depot.zones.menu.x+1.0, Depot.zones.menu.y, Depot.zones.menu.z, 0.0, true, false)        
+        SetEntityInvincible(activeDriver, true)        
+        SetDriverAbility(activeDriver, 1.0)
+        SetDriverAggressiveness(activeDriver, 0.0)
+        SetPedCanBeDraggedOut(activeDriver, false)
+        SetPedStayInVehicleWhenJacked(activeDriver, true)
+        SetBlockingOfNonTemporaryEvents(activeDriver, false)
+        SetPedCanPlayAmbientAnims(activeDriver, true)
+        -- SetPedRelationshipGroupDefaultHash(activeDriver, pedGroup)
+        -- SetPedRelationshipGroupHash(activeDriver, pedGroup)
+        SetCanAttackFriendly(activeDriver, false, false)
+        SetPedCombatMovement(activeDriver, 0)
+        print('driver spawn:'.. activeDriver .. '')
+        if cb ~= nil then
+			cb(activeDriver)
+		end
+    end)
 end
 --------------INIT--------------
 Citizen.CreateThread(function()
@@ -90,6 +117,13 @@ AddEventHandler("onResourceStop", function(resourceName)
             DeleteObject(PBusSigns[j])        
         end
     end
+end)
+--
+RegisterNetEvent('pbdm:createbus')
+AddEventHandler('pbdm:createbus', function(bObj)    
+   local bDriver = spawnBusDriver(bObj[2], function(driverData)
+	print(driverData)
+   end)
 end)
 --
 Citizen.CreateThread(function()
