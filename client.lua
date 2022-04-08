@@ -89,7 +89,7 @@ Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(0)		
 		if IsInPbusZone then
-			drawOnScreen2D('~o~ Isin Zone: ~g~ true', 255, 255, 255, 255, 0.05, 0.15, 0.3)
+			drawOnScreen2D('~o~Press [~g~E~o~] to call a Prison Bus.', 255, 255, 255, 255, 0.45, 0.45, 0.6)
 		end
 	end
 end)
