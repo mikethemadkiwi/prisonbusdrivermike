@@ -1,6 +1,6 @@
 PBusSigns = {}
 PBUSDepot = {}
-BDDB.PrisonDepot = { 
+PrisonDepot = { 
     {
         uid = 'prisonbus_1',
         name = "Bolingbroke Penitentiary",
@@ -31,11 +31,11 @@ Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(0)	
 		if NetworkIsPlayerActive(PlayerId()) then
-			for j=1, #BDDB.PrisonDepot do
+			for j=1, #PrisonDepot do
 				-- add polyzone for bus		
 				addBusPZones(PBUSDepot[j], 2.0, false, true, {})
 				-- create bus sign
-				PBusSigns[BDDB.PrisonDepot[j].uid] = CreateObject(-1022684418, BDDB.PrisonDepot[j].zones.menu.x, BDDB.PrisonDepot[j].zones.menu.y, BDDB.PrisonDepot[j].zones.menu.z, false, false, false)					
+				PBusSigns[PrisonDepot[j].uid] = CreateObject(-1022684418, PrisonDepot[j].zones.menu.x, PrisonDepot[j].zones.menu.y, PrisonDepot[j].zones.menu.z, false, false, false)					
 			end			
 			break
 		end
