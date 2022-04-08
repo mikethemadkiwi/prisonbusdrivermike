@@ -28,12 +28,12 @@ PrisonDepot = {
     }
 }
 function addBusPZones(depot, radius, useZ, debug, options)
-    table.insert(pZones, CircleZone:Create(vector3(depot.zones.menu.x, depot.zones.menu.y, depot.zones.menu.z), radius, {
-        name=depot.name,
-        useZ=useZ,
-        data=depot,
-        debugPoly=polydebug
-    }))    
+    -- table.insert(pZones, CircleZone:Create(vector3(depot.zones.menu.x, depot.zones.menu.y, depot.zones.menu.z), radius, {
+    --     name=depot.name,
+    --     useZ=useZ,
+    --     data=depot,
+    --     debugPoly=polydebug
+    -- }))    
 end
 --------------INIT--------------
 Citizen.CreateThread(function()
