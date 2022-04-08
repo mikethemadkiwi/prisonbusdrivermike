@@ -43,7 +43,7 @@ Citizen.CreateThread(function()
 		if NetworkIsPlayerActive(PlayerId()) then
 			for j=1, #PrisonDepot do
 				-- add polyzone for bus		
-				addBusPZones(PBUSDepot[j], 1.0, false, pZoneDebug, {})
+				addBusPZones(PrisonDepot[j], 1.0, false, pZoneDebug, {})
 				-- create bus sign
 				PBusSigns[PrisonDepot[j].uid] = CreateObject(-1022684418, PrisonDepot[j].zones.menu.x, PrisonDepot[j].zones.menu.y, PrisonDepot[j].zones.menu.z, false, false, false)					
 			end			
@@ -59,4 +59,3 @@ AddEventHandler("onResourceStop", function(resourceName)
         end
     end
 end)
---
