@@ -1,4 +1,7 @@
 pZoneDebug = true
+PBDMConf = {
+	busModel:'pbus'
+}
 pZones = {}
 PBusSigns = {}
 PBUSDepot = {}
@@ -67,7 +70,8 @@ function spawnBusDriver(Depot, cb)
             Wait(1)
         end
         activeDriver = CreatePed(5, 'u_m_m_promourn_01', Depot.zones.menu.x+1.0, Depot.zones.menu.y, Depot.zones.menu.z, 0.0, true, false)        
-        SetEntityInvincible(activeDriver, true)        
+        activeDriverNetId = NetworkGetNetworkIdFromEntity(activeDriver)
+		SetEntityInvincible(activeDriver, true)        
         SetDriverAbility(activeDriver, 1.0)
         SetDriverAggressiveness(activeDriver, 0.0)
         SetPedCanBeDraggedOut(activeDriver, false)
@@ -78,12 +82,52 @@ function spawnBusDriver(Depot, cb)
         -- SetPedRelationshipGroupHash(activeDriver, pedGroup)
         SetCanAttackFriendly(activeDriver, false, false)
         SetPedCombatMovement(activeDriver, 0)
-        print('driver spawn:'.. activeDriver .. '')
+        print('driver spawn:'.. activeDriver .. ' ['..activeDriverNetId..']')
         if cb ~= nil then
-			cb(activeDriver)
+			cb({activeDriver, activeDriverNetId})
 		end
     end)
 end
+--
+function spawnBusAtDepot(busmodel, x, y, z, heading, driverPed, route, cb)
+    local model = (type(busmodel) == 'number' and busmodel or GetHashKey(busmodel))
+    Citizen.CreateThread(function()
+		RequestModel(model)
+		while not HasModelLoaded(model) do
+			Citizen.Wait(0)
+		end
+		activeBus = CreateVehicle(model, x, y, z, heading, true, false)
+		activeBusNetId = NetworkGetNetworkIdFromEntity(activeBus)
+		SetNetworkIdCanMigrate(activeBusNetId, true)
+		SetEntityAsMissionEntity(activeBus, true, false)
+		SetVehicleHasBeenOwnedByPlayer(activeBus, false)
+        SetDisableVehicleWindowCollisions(activeBus, false)
+        SetEntityInvincible(activeBus, true)
+		SetVehicleNeedsToBeHotwired(activeBus, false)
+		SetModelAsNoLongerNeeded(model)
+		RequestCollisionAtCoord(x, y, z)
+		while not HasCollisionLoadedAroundEntity(activeBus) do
+			RequestCollisionAtCoord(x, y, z)
+			Citizen.Wait(0)
+		end
+		SetVehRadioStation(activeBus, 'OFF')
+        print('bus spawn:'.. activeBus .. ' netid: '.. activeBusNetId ..'')
+		if cb ~= nil then
+			cb(activeBus)
+		end
+	end)
+end
+--
+RegisterNetEvent('pbdm:createbus')
+AddEventHandler('pbdm:createbus', function(bObj)
+	-- Driver
+	local bDriver = spawnBusDriver(bObj[2], function(driverData)
+		print(driverData[1])
+		local bVehicle = spawnBusAtDepot(PBDMConf.busModel, bObj[2].zones.departure.x, bObj[2].zones.departure.y, bObj[2].zones.departure.z, bObj[2].zones.departure.h, driverData[1], 1, function(busData)
+
+		end)
+   	end)
+end)
 --------------INIT--------------
 Citizen.CreateThread(function()
 	while true do
@@ -117,13 +161,6 @@ AddEventHandler("onResourceStop", function(resourceName)
             DeleteObject(PBusSigns[j])        
         end
     end
-end)
---
-RegisterNetEvent('pbdm:createbus')
-AddEventHandler('pbdm:createbus', function(bObj)    
-   local bDriver = spawnBusDriver(bObj[2], function(driverData)
-	print(driverData)
-   end)
 end)
 --
 Citizen.CreateThread(function()
