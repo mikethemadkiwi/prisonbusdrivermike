@@ -56,7 +56,7 @@ end
 --
 function CallBusAtZone(zone)
 	for j=1, #zone do
-		print(zone[j])
+		if zone[j]==nil then print('key:'..j..' val:'..zone[j]..'') end
 	end
 end
 --------------INIT--------------
