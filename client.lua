@@ -3,6 +3,7 @@ pZones = {}
 PBusSigns = {}
 PBUSDepot = {}
 IsInPbusZone = false
+currentZone = nil
 PrisonDepot = { 
     {
         uid = 'prisonbus_1',
@@ -52,6 +53,10 @@ function addBusPZones(depot, radius, useZ, debug, options)
         debugPoly=debug
     }))    
 end
+--
+function CallBusAtZone(zone)
+	print(zone.uid)
+end
 --------------INIT--------------
 Citizen.CreateThread(function()
 	while true do
@@ -66,8 +71,10 @@ Citizen.CreateThread(function()
 			DepotPolyList:onPlayerInOut(function(isPointInside, point, zone)
 				if zone then
 					if isPointInside then
+						currentZone = zone
 						IsInPbusZone = true
 					  else
+						currentZone = nil
 						IsInPbusZone = false
 					  end
 				end
@@ -89,7 +96,12 @@ Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(0)		
 		if IsInPbusZone then
-			drawOnScreen2D('~o~Press [~g~E~o~] to call a Prison Bus.', 255, 255, 255, 255, 0.45, 0.45, 0.6)
+			if IsControlJustPressed(0, 51) then
+				CallBusAtZone(currentZone)
+			end
+			if not IsNuiFocused() then
+				drawOnScreen2D('~y~Press [ ~g~E~y~ ] to call a Prison Bus.', 255, 255, 255, 255, 0.40, 0.45, 0.6)
+			end
 		end
 	end
 end)
