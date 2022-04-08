@@ -1,6 +1,6 @@
 pZoneDebug = true
 PBDMConf = {
-	busModel:'pbus'
+	busModel='pbus'
 }
 pZones = {}
 PBusSigns = {}
