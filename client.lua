@@ -248,7 +248,7 @@ Citizen.CreateThread(function()
                 -- local distancetostop = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, false)
                 -- -- do our ai logic from current location to destination loca.
                 -- if distancetostop > 1 then
-                    TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, 30, drivingStyle, 0.5)
+                    TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], 123, 2035, 128, 30, drivingStyle, 0.5)
                 -- end
             else
                 -- JFST. just flippin sit there.
