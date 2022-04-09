@@ -239,24 +239,23 @@ Citizen.CreateThread(function()
 		Citizen.Wait(0)	
         if CurrentPbus ~= nil then
             if IsVehicleStuckOnRoof(CurrentPbus[1]) or IsEntityUpsidedown(CurrentPbus[1]) or IsEntityDead(CurrentDriver[1]) or IsEntityDead(CurrentPbus[1]) then
-                DeleteBusAndDriver(CurrentPbus[1], CurrentDriver[1])
-            else
-                if CanDrive == true then
-                    SetVehicleHandbrake(CurrentPbus[1], false) -- hb off
-                    SetVehicleDoorsLocked(CurrentPbus[1], 2) -- locked
-                    local buscoords = GetEntityCoords(CurrentPbus[1])
-                    local distancetostop = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, false)
-                    -- do our ai logic from current location to destination loca.
-                    if distancetostop > 1 then
-                        TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, 12.5, drivingStyle, 0.5)
-                    end
-                else
-                    -- JFST. just flippin sit there.
-                    SetVehicleDoorsLocked(CurrentPbus[1], 1) -- unlocked
-                    TaskVehicleTempAction(CurrentDriver[1], CurrentPbus[1], 6, 2000)
-                    SetVehicleHandbrake(CurrentPbus[1], true)
-                    SetVehicleEngineOn(CurrentPbus[1], true, true, false)
+                DeleteBusAndDriver(CurrentPbus[1], CurrentDriver[1])           
+            end
+            if CanDrive == true then
+                SetVehicleHandbrake(CurrentPbus[1], false) -- hb off
+                SetVehicleDoorsLocked(CurrentPbus[1], 2) -- locked
+                local buscoords = GetEntityCoords(CurrentPbus[1])
+                local distancetostop = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, false)
+                -- do our ai logic from current location to destination loca.
+                if distancetostop > 1 then
+                    TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, 30, drivingStyle, 0.5)
                 end
+            else
+                -- JFST. just flippin sit there.
+                SetVehicleDoorsLocked(CurrentPbus[1], 1) -- unlocked
+                TaskVehicleTempAction(CurrentDriver[1], CurrentPbus[1], 6, 2000)
+                SetVehicleHandbrake(CurrentPbus[1], true)
+                SetVehicleEngineOn(CurrentPbus[1], true, true, false)
             end
         end
 	end
