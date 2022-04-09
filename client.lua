@@ -1,14 +1,19 @@
 pZoneDebug = true
 PBDMConf = {
-	busModel='pbus'
+	busModel='pbus',
+    drivingStyle = 786603
+    -- drivingStyle = 411
 }
+--
 pZones = {}
-PBusSigns = {}
-PBUSDepot = {}
-CurrentDriver = nil
-CurrentPbus = nil
 IsInPbusZone = false
 currentZone = nil
+--
+PBusSigns = {}
+CurrentDriver = nil
+CurrentPbus = nil
+CurrentDepot = nil
+CanDrive = false
 PrisonDepot = { 
     {
         uid = 'prisonbus_1',
@@ -18,7 +23,7 @@ PrisonDepot = {
             menu = {x = 1817.217, y = 2599.202, z = 44.523},
             passenger = {x = 1801.599, y = 2609.289, z = 44.565},
             departure = {x = 1800.453, y = 2607.865, z = 45.823, h = 269.899}, -- location leaving FROM
-            recieving = {x = 446.004, y = -1020.88, z = 28.782, h = 279.469} -- location heading TO
+            recieving = {x = 472.07, y = -1023.654, z = 28.416, h = 279.469} -- location heading TO
         },
         blip = {sprite = 58, color = 8, scale = 0.5}
     },
@@ -128,12 +133,12 @@ function DeleteLastBusAndDriver()
             end
             DeleteEntity(CurrentDriver[1])
             DeleteEntity(CurrentPbus[1])
-            CurrentPbus[1] = nil
-            CurrentDriver[1] = nil
         end
         if not DoesEntityExist(CurrentPbus[1]) and DoesEntityExist(CurrentDriver[1]) then
             DeleteEntity(CurrentDriver[1])
         end
+        CurrentPbus = nil
+        CurrentDriver = nil
     end
 end
 --
@@ -152,8 +157,10 @@ end
 --
 RegisterNetEvent('pbdm:createbus')
 AddEventHandler('pbdm:createbus', function(bObj)
+    CurrentDepot = bObj
     -- check for existing bus i own and delete.
     DeleteLastBusAndDriver()
+    CanDrive = false
 	-- Driver
 	local bDriver = spawnBusDriver(bObj[2], function(driverData)
         CurrentDriver = driverData
@@ -167,14 +174,14 @@ AddEventHandler('pbdm:createbus', function(bObj)
             for i = 0, 1 do
                 SetVehicleDoorOpen(CurrentPbus[1], i, false)
             end 
-            -- TriggerServerEvent('bdm:makepass', {activeBus,activeBusNetId,zData})  
+            TriggerServerEvent('pbdm:makepass', {CurrentPbus[1], CurrentPbus[2], bObj})  
             Citizen.Wait(30000)
-            -- TriggerServerEvent('bdm:delpass', {activeBus,activeBusNetId})
+            TriggerServerEvent('pbdm:delpass', {CurrentPbus[1], CurrentPbus[2], bObj})
             Citizen.Wait(30000)
             for i = 0, 1 do
                 SetVehicleDoorShut(CurrentPbus[1], i, false)
-            end 
-            -- DeleteLastBusAndDriver()
+            end
+            CanDrive = true
 		end)
    	end)
 end)
@@ -224,5 +231,33 @@ Citizen.CreateThread(function()
 				drawOnScreen2D('~y~Press [ ~g~E~y~ ] to call a Prison Bus.', 255, 255, 255, 255, 0.40, 0.45, 0.6)
 			end
 		end
+	end
+end)
+--
+Citizen.CreateThread(function()
+	while true do
+		Citizen.Wait(0)	
+        if CurrentPbus ~= nil then
+            if IsVehicleStuckOnRoof(CurrentPbus[1]) or IsEntityUpsidedown(CurrentPbus[1]) or IsEntityDead(CurrentDriver[1]) or IsEntityDead(CurrentPbus[1]) then
+                DeleteBusAndDriver(CurrentPbus[1], CurrentDriver[1])
+            else
+                if CanDrive == true then
+                    SetVehicleHandbrake(CurrentPbus[1], false) -- hb off
+                    SetVehicleDoorsLocked(CurrentPbus[1], 2) -- locked
+                    local buscoords = GetEntityCoords(CurrentPbus[1])
+                    local distancetostop = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, false)
+                    -- do our ai logic from current location to destination loca.
+                    if distancetostop > 1 then
+                        TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, 12.5, drivingStyle, 0.5)
+                    end
+                else
+                    -- JFST. just flippin sit there.
+                    SetVehicleDoorsLocked(CurrentPbus[1], 1) -- unlocked
+                    TaskVehicleTempAction(CurrentDriver[1], CurrentPbus[1], 6, 2000)
+                    SetVehicleHandbrake(CurrentPbus[1], true)
+                    SetVehicleEngineOn(CurrentPbus[1], true, true, false)
+                end
+            end
+        end
 	end
 end)
