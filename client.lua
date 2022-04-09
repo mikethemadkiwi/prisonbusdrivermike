@@ -121,18 +121,20 @@ function spawnBusAtDepot(busmodel, x, y, z, heading, driverPed, route, cb)
 end
 --
 function DeleteLastBusAndDriver()
-    if DoesEntityExist(CurrentPbus[1]) then
-		if IsPedInVehicle(PlayerPedId(), CurrentPbus[1], false) then
-			TaskLeaveVehicle(PlayerPedId(), CurrentPbus[1], 0)
-		end
-		DeleteEntity(CurrentDriver[1])
-		DeleteEntity(CurrentPbus[1])
-        CurrentPbus[1] = nil
-        CurrentDriver[1] = nil
-	end
-	if not DoesEntityExist(CurrentPbus[1]) and DoesEntityExist(CurrentDriver[1]) then
-		DeleteEntity(CurrentDriver[1])
-	end
+    if CurrentPbus ~= nil then
+        if DoesEntityExist(CurrentPbus[1]) then
+            if IsPedInVehicle(PlayerPedId(), CurrentPbus[1], false) then
+                TaskLeaveVehicle(PlayerPedId(), CurrentPbus[1], 0)
+            end
+            DeleteEntity(CurrentDriver[1])
+            DeleteEntity(CurrentPbus[1])
+            CurrentPbus[1] = nil
+            CurrentDriver[1] = nil
+        end
+        if not DoesEntityExist(CurrentPbus[1]) and DoesEntityExist(CurrentDriver[1]) then
+            DeleteEntity(CurrentDriver[1])
+        end
+    end
 end
 --
 function putplayerinseat(busid)    
