@@ -5,6 +5,8 @@ PBDMConf = {
 pZones = {}
 PBusSigns = {}
 PBUSDepot = {}
+CurrentDriver = nil
+CurrentPbus = nil
 IsInPbusZone = false
 currentZone = nil
 PrisonDepot = { 
@@ -113,18 +115,50 @@ function spawnBusAtDepot(busmodel, x, y, z, heading, driverPed, route, cb)
 		SetVehRadioStation(activeBus, 'OFF')
         print('bus spawn:'.. activeBus .. ' netid: '.. activeBusNetId ..'')
 		if cb ~= nil then
-			cb(activeBus)
+			cb({activeBus, activeBusNetId})
 		end
 	end)
 end
 --
+function DeleteLastBusAndDriver()
+    if DoesEntityExist(CurrentPbus[1]) then
+		if IsPedInVehicle(PlayerPedId(), CurrentPbus[1], false) then
+			TaskLeaveVehicle(PlayerPedId(), CurrentPbus[1], 0)
+		end
+		DeleteEntity(CurrentDriver[1])
+		DeleteEntity(CurrentPbus[1])
+        CurrentPbus[1] = nil
+        CurrentDriver[1] = nil
+	end
+	if not DoesEntityExist(CurrentPbus[1]) and DoesEntityExist(CurrentDriver[1]) then
+		DeleteEntity(CurrentDriver[1])
+	end
+end
+--
+function putplayerinseat(busid)    
+    local numPass = GetVehicleMaxNumberOfPassengers(busid) - 1 
+    for j=-1, numPass do
+        local isfree = IsVehicleSeatFree(busid, j)        
+        if isfree == 1 then
+            local playerPed = PlayerPedId()
+            TaskEnterVehicle(playerPed, busid, 15000, j, 2.0, 1, 0)
+            TriggerServerEvent('bdm:passentered', {busid})
+            break
+        end        
+    end
+end
+--
 RegisterNetEvent('pbdm:createbus')
 AddEventHandler('pbdm:createbus', function(bObj)
+    -- check for existing bus i own and delete.
+    DeleteLastBusAndDriver()
 	-- Driver
 	local bDriver = spawnBusDriver(bObj[2], function(driverData)
-		print(driverData[1])
+        CurrentDriver = driverData[1]
 		local bVehicle = spawnBusAtDepot(PBDMConf.busModel, bObj[2].zones.departure.x, bObj[2].zones.departure.y, bObj[2].zones.departure.z, bObj[2].zones.departure.h, driverData[1], 1, function(busData)
-
+            CurrentPbus = busData
+            print('Bus:'..CurrentPbus[1]..' Driver:'..CurrentDriver[1])
+            TriggerServerEvent('pbdm:createdbusinfo', {CurrentDriver, CurrentPbus, bObj})
 		end)
    	end)
 end)
