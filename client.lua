@@ -29,7 +29,7 @@ PrisonDepot = {
         zones = {
             menu = {x = 446.645, y = -1011.495, z = 27.528},
             passenger = {x = 440.5, y = -1013.8, z = 28.7},
-            departure = {x = 441.569, y = -1015412, z = 28.924, h = 90.588},
+            departure = {x = 441.569, y = -1015412, z = 29.924, h = 90.588},
             recieving = {x = 1799.957, y = 2607.87, z = 45.823, h = 91.443}
         },
         blip = {sprite = 58, color = 8, scale = 0.5}
