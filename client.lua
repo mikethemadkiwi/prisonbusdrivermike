@@ -164,16 +164,16 @@ AddEventHandler('pbdm:createbus', function(bObj)
             --
             SetPedIntoVehicle(CurrentDriver[1], CurrentPbus[1], -1)         
             -----------------------------------------------------
-            -- for i = 0, 5 do
-                SetVehicleDoorOpen(CurrentPbus[1], 0, false)
-            -- end 
+            for i = 0, 1 do
+                SetVehicleDoorOpen(CurrentPbus[1], i, false)
+            end 
             -- TriggerServerEvent('bdm:makepass', {activeBus,activeBusNetId,zData})  
             Citizen.Wait(30000)
             -- TriggerServerEvent('bdm:delpass', {activeBus,activeBusNetId})
             Citizen.Wait(30000)
-            -- for i = 0, 5 do
-                SetVehicleDoorShut(CurrentPbus[1], 0, false)
-            -- end 
+            for i = 0, 1 do
+                SetVehicleDoorShut(CurrentPbus[1], i, false)
+            end 
             -- DeleteLastBusAndDriver()
 		end)
    	end)
