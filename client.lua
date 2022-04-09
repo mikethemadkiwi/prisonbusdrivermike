@@ -27,9 +27,9 @@ PrisonDepot = {
         name = "Mission Row Police Station",
         aZone = 139,
         zones = {
-            menu = {x = 446.645, y = -1011.495, z = 27.528},
-            passenger = {x = 440.5, y = -1013.8, z = 28.7},
-            departure = {x = 441.569, y = -1015.412, z = 28.924, h = 90.588},
+            menu = {x = 472.854, y = -1019.361, z = 27.118},
+            passenger = {x = 473.6, y = -1024.8, z = 28.1},
+            departure = {x = 472.343, y = -1023.378, z = 28.407, h = 275.562},
             recieving = {x = 1799.957, y = 2607.87, z = 45.823, h = 91.443}
         },
         blip = {sprite = 58, color = 8, scale = 0.5}
