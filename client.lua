@@ -181,9 +181,9 @@ AddEventHandler('pbdm:createbus', function(bObj)
             for i = 0, 1 do
                 SetVehicleDoorShut(CurrentPbus[1], i, false)
             end 
+            CanDrive = true
             TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, 30, 411, 1.5)
             SetPedKeepTask(CurrentDriver[1], true)
-            CanDrive = true
 		end)
    	end)
 end)
