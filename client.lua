@@ -272,6 +272,11 @@ Citizen.CreateThread(function()
                         TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, 411, 1.0)
                     --     -- SetPedKeepTask(CurrentDriver[1], true)
                     end
+                    if math.floor(distancetostop) == 75 then
+                        sLimit = 5.0
+                        TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, 411, 5.0)
+                    --     -- SetPedKeepTask(CurrentDriver[1], true)
+                    end
                 else
                     -- print('yes bus. but not moving.')
                     -- JFST. just flippin sit there.
