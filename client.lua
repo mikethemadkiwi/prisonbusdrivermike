@@ -245,7 +245,7 @@ Citizen.CreateThread(function()
                 end
                 if CanDrive == true then
                     print('yes bus. but can moving.')
-                    SetVehicleHandbrake(CurrentPbus[1], false) -- hb off
+                    -- SetVehicleHandbrake(CurrentPbus[1], false) -- hb off
                     SetVehicleDoorsLocked(CurrentPbus[1], 2) -- locked
                     -- local buscoords = GetEntityCoords(CurrentPbus[1])
                     -- local distancetostop = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, false)
@@ -258,7 +258,7 @@ Citizen.CreateThread(function()
                     -- JFST. just flippin sit there.
                     SetVehicleDoorsLocked(CurrentPbus[1], 1) -- unlocked
                     TaskVehicleTempAction(CurrentDriver[1], CurrentPbus[1], 6, 2000)
-                    SetVehicleHandbrake(CurrentPbus[1], true)
+                    -- SetVehicleHandbrake(CurrentPbus[1], true)
                     SetVehicleEngineOn(CurrentPbus[1], true, true, false)
 
                 end
