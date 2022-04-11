@@ -260,12 +260,14 @@ Citizen.CreateThread(function()
                     -- print('yes bus. but can moving.')
                     -- SetVehicleHandbrake(CurrentPbus[1], false) -- hb off
                     -- SetVehicleDoorsLocked(CurrentPbus[1], 2) -- locked
-                    -- local buscoords = GetEntityCoords(CurrentPbus[1])
-                    -- local distancetostop = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, false)
+                    local buscoords = GetEntityCoords(CurrentPbus[1])
+                    local distancefromstart = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.departure.x, CurrentDepot[2].zones.departure.y, CurrentDepot[2].zones.departure.z, false)
+                    local distancetostop = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, false)
                     -- -- do our ai logic from current location to destination loca.
-                    -- if distancetostop > 1 then
-                        -- TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, 15.0, 411, 0.5)
-                        -- SetPedKeepTask(CurrentDriver[1], true)
+                    -- if distancefromstart > 25 then
+                    drawOnScreen2D('DFS:[ '..distancefromstart..' ] DTS:[ '..distancetostop..' ]', 255, 255, 255, 255, 0.45, 0.45, 0.6)
+                    --     -- TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, 15.0, 411, 0.5)
+                    --     -- SetPedKeepTask(CurrentDriver[1], true)
                     -- end
                 else
                     -- print('yes bus. but not moving.')
