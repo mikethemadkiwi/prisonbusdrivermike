@@ -1,10 +1,11 @@
 pZoneDebug = true
 PBDMConf = {
 	busModel='pbus',
-    drivingStyle = 786603
-    -- drivingStyle = 411
+    -- drivingStyle = 786603
+    drivingStyle = 411
 }
 --
+pedGroup = nil
 pZones = {}
 IsInPbusZone = false
 currentZone = nil
@@ -85,8 +86,8 @@ function spawnBusDriver(Depot, cb)
         SetPedStayInVehicleWhenJacked(activeDriver, true)
         SetBlockingOfNonTemporaryEvents(activeDriver, false)
         SetPedCanPlayAmbientAnims(activeDriver, true)
-        -- SetPedRelationshipGroupDefaultHash(activeDriver, pedGroup)
-        -- SetPedRelationshipGroupHash(activeDriver, pedGroup)
+        SetPedRelationshipGroupDefaultHash(activeDriver, pedGroup)
+        SetPedRelationshipGroupHash(activeDriver, pedGroup)
         SetCanAttackFriendly(activeDriver, false, false)
         SetPedCombatMovement(activeDriver, 0)
         print('driver spawn:'.. activeDriver .. ' ['..activeDriverNetId..']')
@@ -212,6 +213,14 @@ Citizen.CreateThread(function()
 			break
 		end
 	end
+end)
+--
+AddEventHandler("onResourceStart", function(resourceName)
+    if GetCurrentResourceName() == resourceName then       
+        local v, pGroup = AddRelationshipGroup('bdmDrivers')
+        pedGroup = pGroup
+        print('Added Bus group "bdmDrivers" as ['..pedGroup..']')
+    end
 end)
 --
 AddEventHandler("onResourceStop", function(resourceName)
