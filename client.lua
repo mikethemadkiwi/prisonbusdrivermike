@@ -15,6 +15,7 @@ CurrentDriver = nil
 CurrentPbus = nil
 CurrentDepot = nil
 CanDrive = false
+sLimit = 5.0
 PrisonDepot = { 
     {
         uid = 'prisonbus_1',
@@ -183,9 +184,10 @@ AddEventHandler('pbdm:createbus', function(bObj)
                 SetVehicleDoorShut(CurrentPbus[1], i, false)
             end 
             CanDrive = true
-            TaskVehicleDriveWander(CurrentDriver[1], CurrentPbus[1], 5.0, 411)
+            sLimit = 5.0
+            TaskVehicleDriveWander(CurrentDriver[1], CurrentPbus[1], sLimit, 411)
             SetDriveTaskDrivingStyle(CurrentDriver[1], 411)
-            TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, 5.0, 411, 5.0)
+            TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, 411, 5.0)
             -- TaskVehicleDriveToCoord(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, 30.0, 1.0, GetHashKey(CurrentPbus[1]), 411, 1.0, 1)
             -- SetPedKeepTask(CurrentDriver[1], true)
 		end)
@@ -263,10 +265,11 @@ Citizen.CreateThread(function()
                     local buscoords = GetEntityCoords(CurrentPbus[1])
                     local distancefromstart = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.departure.x, CurrentDepot[2].zones.departure.y, CurrentDepot[2].zones.departure.z, false)
                     local distancetostop = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, false)     
-                    drawOnScreen2D('DFS:[ '..distancefromstart..' ] DTS:[ '..distancetostop..' ]', 255, 255, 255, 255, 0.45, 0.45, 0.6)
+                    drawOnScreen2D('DFS:[ '..distancefromstart..' ] DTS:[ '..distancetostop..' ] @ '..sLimit..' Speed ', 255, 255, 255, 255, 0.45, 0.45, 0.6)
                     -- -- do our ai logic from current location to destination loca.
                     if Math.floor(distancefromstart) = 100 then
-                        TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, 60.0, 411, 1.0)
+                        sLimit = 60.0
+                        TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, 411, 1.0)
                     --     -- SetPedKeepTask(CurrentDriver[1], true)
                     end
                 else
