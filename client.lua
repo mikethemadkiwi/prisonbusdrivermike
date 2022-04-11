@@ -244,17 +244,18 @@ Citizen.CreateThread(function()
                     DeleteBusAndDriver(CurrentPbus[1], CurrentDriver[1])           
                 end
                 if CanDrive == true then
-                    print('yes bus. but can moving.')
+                    -- print('yes bus. but can moving.')
                     -- SetVehicleHandbrake(CurrentPbus[1], false) -- hb off
                     SetVehicleDoorsLocked(CurrentPbus[1], 2) -- locked
                     -- local buscoords = GetEntityCoords(CurrentPbus[1])
                     -- local distancetostop = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, false)
                     -- -- do our ai logic from current location to destination loca.
                     -- if distancetostop > 1 then
-                        TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], 123, 2035, 128, 30, 411, 1.5)
+                        TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, 30, 411, 1.5)
+                        SetPedKeepTask(CurrentDriver[1], true)
                     -- end
                 else
-                    print('yes bus. but not moving.')
+                    -- print('yes bus. but not moving.')
                     -- JFST. just flippin sit there.
                     SetVehicleDoorsLocked(CurrentPbus[1], 1) -- unlocked
                     TaskVehicleTempAction(CurrentDriver[1], CurrentPbus[1], 6, 2000)
