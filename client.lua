@@ -267,7 +267,7 @@ Citizen.CreateThread(function()
                     local distancetostop = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, false)     
                     drawOnScreen2D('DFS:[ '..distancefromstart..' ] DTS:[ '..distancetostop..' ] @ '..sLimit..' Speed ', 255, 255, 255, 255, 0.45, 0.45, 0.6)
                     -- -- do our ai logic from current location to destination loca.
-                    if Math.floor(distancefromstart) = 100 then
+                    if Math.floor(distancefromstart) == 100 then
                         sLimit = 60.0
                         TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, 411, 1.0)
                     --     -- SetPedKeepTask(CurrentDriver[1], true)
