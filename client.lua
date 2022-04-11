@@ -183,8 +183,8 @@ AddEventHandler('pbdm:createbus', function(bObj)
                 SetVehicleDoorShut(CurrentPbus[1], i, false)
             end 
             CanDrive = true
-            TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, 30, 411, 1.5)
-            SetPedKeepTask(CurrentDriver[1], true)
+            TaskVehicleDriveToCoord(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, 30.0, 1.0, GetHashKey(CurrentPbus[1]), 411, 1.0, 1)
+            -- SetPedKeepTask(CurrentDriver[1], true)
 		end)
    	end)
 end)
@@ -247,8 +247,7 @@ end)
 --
 Citizen.CreateThread(function()
 	while true do
-		Citizen.Wait(5000)	
-        
+		Citizen.Wait(2500)
 		if NetworkIsPlayerActive(PlayerId()) then
             if CurrentPbus ~= nil then
                 if IsVehicleStuckOnRoof(CurrentPbus[1]) or IsEntityUpsidedown(CurrentPbus[1]) or IsEntityDead(CurrentDriver[1]) or IsEntityDead(CurrentPbus[1]) then
@@ -257,13 +256,13 @@ Citizen.CreateThread(function()
                 if CanDrive == true then
                     -- print('yes bus. but can moving.')
                     -- SetVehicleHandbrake(CurrentPbus[1], false) -- hb off
-                    SetVehicleDoorsLocked(CurrentPbus[1], 2) -- locked
+                    -- SetVehicleDoorsLocked(CurrentPbus[1], 2) -- locked
                     -- local buscoords = GetEntityCoords(CurrentPbus[1])
                     -- local distancetostop = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, false)
                     -- -- do our ai logic from current location to destination loca.
                     -- if distancetostop > 1 then
-                        TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, 15.0, 411, 0.5)
-                        SetPedKeepTask(CurrentDriver[1], true)
+                        -- TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, 15.0, 411, 0.5)
+                        -- SetPedKeepTask(CurrentDriver[1], true)
                     -- end
                 else
                     -- print('yes bus. but not moving.')
