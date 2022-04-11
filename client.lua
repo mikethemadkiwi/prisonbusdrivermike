@@ -237,7 +237,7 @@ end)
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(0)	
-        if CurrentPbus[1] ~= nil then
+        if CurrentPbus ~= nil then
             if IsVehicleStuckOnRoof(CurrentPbus[1]) or IsEntityUpsidedown(CurrentPbus[1]) or IsEntityDead(CurrentDriver[1]) or IsEntityDead(CurrentPbus[1]) then
                 DeleteBusAndDriver(CurrentPbus[1], CurrentDriver[1])           
             end
