@@ -310,12 +310,7 @@ Citizen.CreateThread(function()
                             sLimit = PBDMConf.maxSpeed
                             TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
                             SetPedKeepTask(CurrentDriver[1], true)
-                        end
-                        if math.floor(distancetostop) == 75 then
-                            sLimit = PBDMConf.creepSpeed
-                            TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
-                            SetPedKeepTask(CurrentDriver[1], true)
-                        end                        
+                        end 
                         if math.floor(distancefromstart) == 4308 then
                             if math.floor(distancetostop) > 600 then
                                 print('slow down happened')
@@ -332,6 +327,11 @@ Citizen.CreateThread(function()
                                 SetPedKeepTask(CurrentDriver[1], true)
                             end
                         end
+                        if math.floor(distancetostop) == 75 then
+                            sLimit = PBDMConf.creepSpeed
+                            TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
+                            SetPedKeepTask(CurrentDriver[1], true)
+                        end                       
 
                     end
                     
