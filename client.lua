@@ -1,8 +1,9 @@
 pZoneDebug = true
 PBDMConf = {
 	busModel='pbus',
-    -- drivingStyle = 786603
-    drivingStyle = 411,
+    -- drivingStyle = 786603,
+    drivingStyle = 524697,
+    -- drivingStyle = 411,
     creepSpeed = 2.5,
     slowSpeed = 5.0,
     citySpeed = 15.0,
