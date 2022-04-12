@@ -4,7 +4,7 @@ PBDMConf = {
     -- drivingStyle = 786603
     drivingStyle = 411,
     creepSpeed = 2.5,
-    maxSpeed = 15.0
+    maxSpeed = 30.0
 }
 --
 pedGroup = nil
