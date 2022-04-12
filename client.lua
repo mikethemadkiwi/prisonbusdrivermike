@@ -260,10 +260,11 @@ end)
 --
 Citizen.CreateThread(function()
 	while true do
-		Citizen.Wait(100)
+		Citizen.Wait(60000)
 		if NetworkIsPlayerActive(PlayerId()) then
             if CurrentPbus ~= nil then                
                 if CanDrive == true then
+                    print('AI ['..CurrentDriver[1]..'] Updated')
                     TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
                     SetPedKeepTask(CurrentDriver[1], true)
                 end
@@ -328,7 +329,7 @@ Citizen.CreateThread(function()
                         if math.floor(distancefromstart) == 4298 then
                             if math.floor(distancetostop) > 600 then
                                 -- print('slow down happened')
-                                sLimit = PBDMConf.slowSpeed
+                                sLimit = PBDMConf.creepSpeed
                                 TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
                                 SetPedKeepTask(CurrentDriver[1], true)
                             end
