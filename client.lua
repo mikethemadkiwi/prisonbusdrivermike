@@ -20,6 +20,7 @@ CurrentDriver = nil
 CurrentPbus = nil
 CurrentDepot = nil
 CanDrive = false
+ShouldEnd = false
 sLimit = 5.0
 PrisonDepot = { 
     {
@@ -168,6 +169,7 @@ AddEventHandler('pbdm:createbus', function(bObj)
     -- check for existing bus i own and delete.
     DeleteLastBusAndDriver()
     CanDrive = false
+    ShouldEnd = false
 	-- Driver
 	local bDriver = spawnBusDriver(bObj[2], function(driverData)
         CurrentDriver = driverData
@@ -265,7 +267,7 @@ Citizen.CreateThread(function()
                 end
                 if CanDrive == true then
                     -- print('yes bus. but can moving.')
-                    -- SetVehicleHandbrake(CurrentPbus[1], false) -- hb off
+                    SetVehicleHandbrake(CurrentPbus[1], false) -- hb off
                     SetVehicleDoorsLocked(CurrentPbus[1], 2) -- locked                   
                     local buscoords = GetEntityCoords(CurrentPbus[1])
                     local distancefromstart = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.departure.x, CurrentDepot[2].zones.departure.y, CurrentDepot[2].zones.departure.z, false)
@@ -343,7 +345,8 @@ Citizen.CreateThread(function()
 
                     -- ALL BUSES
                     if math.floor(distancetostop) < 5.0 then
-                        DeleteBusAndDriver(CurrentPbus[1], CurrentDriver[1])
+                        CanDrive = false
+                        ShouldEnd = true
                     end
                     
                 else
@@ -351,9 +354,16 @@ Citizen.CreateThread(function()
                     -- JFST. just flippin sit there.
                     SetVehicleDoorsLocked(CurrentPbus[1], 1) -- unlocked
                     TaskVehicleTempAction(CurrentDriver[1], CurrentPbus[1], 6, 2000)
-                    -- SetVehicleHandbrake(CurrentPbus[1], true)
+                    SetVehicleHandbrake(CurrentPbus[1], true)
                     SetVehicleEngineOn(CurrentPbus[1], true, true, false)
 
+                end
+                if ShouldEnd == true then
+                    SetVehicleDoorsLocked(CurrentPbus[1], 1) -- unlocked                    
+                    for i = 0, 1 do
+                        SetVehicleDoorOpen(CurrentPbus[1], i, false)
+                    end                     
+                    -- DeleteBusAndDriver(CurrentPbus[1], CurrentDriver[1])
                 end
             end
         end
