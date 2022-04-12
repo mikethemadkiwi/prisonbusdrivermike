@@ -183,16 +183,13 @@ AddEventHandler('pbdm:createbus', function(bObj)
             CurrentPbus = busData
             print('Bus:'..CurrentPbus[1]..' Driver:'..CurrentDriver[1])
             TriggerServerEvent('pbdm:createdbusinfo', {CurrentDriver, CurrentPbus, bObj})
-            --
-            SetPedIntoVehicle(CurrentDriver[1], CurrentPbus[1], -1)         
-            -----------------------------------------------------
+            SetPedIntoVehicle(CurrentDriver[1], CurrentPbus[1], -1)    
             for i = 0, 1 do
                 SetVehicleDoorOpen(CurrentPbus[1], i, false)
             end 
             TriggerServerEvent('pbdm:makepass', {CurrentPbus[1], CurrentPbus[2], bObj})  
-            Citizen.Wait(30000)
+            Citizen.Wait(60000)
             TriggerServerEvent('pbdm:delpass', {CurrentPbus[1], CurrentPbus[2], bObj})
-            Citizen.Wait(30000)
             for i = 0, 1 do
                 SetVehicleDoorShut(CurrentPbus[1], i, false)
             end 
@@ -201,7 +198,6 @@ AddEventHandler('pbdm:createbus', function(bObj)
             TaskVehicleDriveWander(CurrentDriver[1], CurrentPbus[1], sLimit, PBDMConf.drivingStyle)
             SetDriveTaskDrivingStyle(CurrentDriver[1], PBDMConf.drivingStyle)
             TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
-            -- TaskVehicleDriveToCoord(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, 30.0, 1.0, GetHashKey(CurrentPbus[1]), PBDMConf.drivingStyle, 1.0, 1)
             SetPedKeepTask(CurrentDriver[1], true)
 		end)
    	end)
@@ -215,7 +211,6 @@ Citizen.CreateThread(function()
 				addBusPZones(PrisonDepot[j], 1.0, false, pZoneDebug, {})
 				PBusSigns[j] = CreateObject(-1022684418, PrisonDepot[j].zones.menu.x, PrisonDepot[j].zones.menu.y, PrisonDepot[j].zones.menu.z, false, false, false)					
 			end
-			--
 			DepotPolyList = ComboZone:Create(pZones, {name="DepotPolyList", debugPoly=polydebug})
 			DepotPolyList:onPlayerInOut(function(isPointInside, point, zone)
 				if zone then
@@ -251,7 +246,6 @@ end)
 --
 RegisterNetEvent('pbdm:makeclientpass')
 AddEventHandler('pbdm:makeclientpass', function(bId)
-    -- SetVehicleIsConsideredByPlayer(buspass, false)
     local pCoords = vector3(bId[3][2].zones.passenger.x, bId[3][2].zones.passenger.y, bId[3][2].zones.passenger.z)
     PassengerZones[bId[2]] = CircleZone:Create(pCoords, 1.0, {
         name="passengerZone",
@@ -261,7 +255,7 @@ AddEventHandler('pbdm:makeclientpass', function(bId)
     PassengerZones[bId[2]]:onPlayerInOut(function(isPointInside, point, zone)
         if isPointInside then
             local buspass = NetworkGetEntityFromNetworkId(bId[2])
-            -- putplayerinseat(buspass) 
+            putplayerinseat(buspass) 
             print('Entered Bus LOCAL: '..buspass..' NET: '..bId[2]..' ')
         end
     end)	
@@ -316,7 +310,6 @@ Citizen.CreateThread(function()
                     DeleteBusAndDriver(CurrentPbus[1], CurrentDriver[1])           
                 end
                 if CanDrive == true then
-                    -- print('yes bus. but can moving.')
                     SetVehicleHandbrake(CurrentPbus[1], false) -- hb off
                     SetVehicleDoorsLocked(CurrentPbus[1], 2) -- locked                   
                     local buscoords = GetEntityCoords(CurrentPbus[1])
@@ -348,7 +341,9 @@ Citizen.CreateThread(function()
                             SetPedKeepTask(CurrentDriver[1], true)
                         end
                     end
+
                     ------ PRISON BUS 2
+
                     if CurrentDepot[2].uid == 'prisonbus_2' then
                         if math.floor(distancefromstart) == 30 then
                             sLimit = PBDMConf.citySpeed
@@ -362,7 +357,6 @@ Citizen.CreateThread(function()
                         end 
                         if math.floor(distancefromstart) == 4298 then
                             if math.floor(distancetostop) > 600 then
-                                -- print('slow down happened')
                                 sLimit = PBDMConf.creepSpeed
                                 TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
                                 SetPedKeepTask(CurrentDriver[1], true)
@@ -370,7 +364,6 @@ Citizen.CreateThread(function()
                         end
                         if math.floor(distancefromstart) == 4390 then
                             if math.floor(distancetostop) > 670 then
-                                -- print('speed up happened')
                                 sLimit = PBDMConf.maxSpeed
                                 TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
                                 SetPedKeepTask(CurrentDriver[1], true)
@@ -388,14 +381,11 @@ Citizen.CreateThread(function()
                         CanDrive = false
                         ShouldEnd = true
                     end                    
-                else
-                    -- print('yes bus. but not moving.')
-                    -- JFST. just flippin sit there.
+                else -- Candrive = false
                     SetVehicleDoorsLocked(CurrentPbus[1], 1) -- unlocked
                     TaskVehicleTempAction(CurrentDriver[1], CurrentPbus[1], 6, 2000)
                     SetVehicleHandbrake(CurrentPbus[1], true)
                     SetVehicleEngineOn(CurrentPbus[1], true, true, false)
-
                 end
                 if ShouldEnd == true then
                     SetVehicleDoorsLocked(CurrentPbus[1], 1) -- unlocked                    
