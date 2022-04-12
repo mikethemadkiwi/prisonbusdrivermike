@@ -6,7 +6,7 @@ PBDMConf = {
     creepSpeed = 2.5,
     slowSpeed = 5.0,
     citySpeed = 15.0,
-    maxSpeed = 60.0,
+    maxSpeed = 30.0,
     stopDistance = 1.0
 }
 --
