@@ -13,6 +13,7 @@ PBDMConf = {
 --
 pedGroup = nil
 pZones = {}
+PassengerZones = {}
 IsInPbusZone = false
 currentZone = nil
 --
@@ -137,7 +138,7 @@ end
 function DeleteLastBusAndDriver()
     if CurrentPbus ~= nil then
         if DoesEntityExist(CurrentPbus[1]) then
-            if IsPedInVehicle(PlayerPedId(), CurrentPbus[1], false) then
+            while IsPedInVehicle(PlayerPedId(), CurrentPbus[1], false) do
                 TaskLeaveVehicle(PlayerPedId(), CurrentPbus[1], 0)
             end
             NetworkFadeOutEntity(CurrentPbus[1],true, false)
@@ -247,6 +248,35 @@ AddEventHandler("onResourceStop", function(resourceName)
         end
     end
 end)
+--
+RegisterNetEvent('pbdm:makeclientpass')
+AddEventHandler('pbdm:makeclientpass', function(bId)
+    -- SetVehicleIsConsideredByPlayer(buspass, false)
+    local pCoords = vector3(bId[3].zones.passenger.x, bId[3].zones.passenger.y, bId[3].zones.passenger.z)
+    PassengerZones[bId[2]] = CircleZone:Create(pCoords, 1.0, {
+        name="passengerZone",
+        useZ=false,
+        debugPoly=polydebug
+    })
+    PassengerZones[bId[2]]:onPlayerInOut(function(isPointInside, point, zone)
+        if isPointInside then
+            local buspass = NetworkGetEntityFromNetworkId(bId[2])
+            putplayerinseat(buspass) 
+            print('Entered Bus LOCAL: '..buspass..' NET: '..bId[2]..' ')
+        end
+    end)	
+end)
+--
+RegisterNetEvent('pbdm:delclientpass')
+AddEventHandler('pbdm:delclientpass', function(bId)
+    -- local buspass = NetworkGetEntityFromNetworkId(bId[2])  
+    PassengerZones[bId[2]]:destroy()
+end)
+
+
+
+
+
 --
 Citizen.CreateThread(function()
 	while true do
