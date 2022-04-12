@@ -304,20 +304,20 @@ Citizen.CreateThread(function()
                             SetPedKeepTask(CurrentDriver[1], true)
                         end                        
                         if math.floor(distancefromstart) == 4308 then
-                            -- if math.floor(distancetostop) == 630 then
+                            if math.floor(distancetostop) > 600 then
                                 print('slow down happened')
                                 sLimit = PBDMConf.slowSpeed
                                 TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, 2.0)
                                 SetPedKeepTask(CurrentDriver[1], true)
-                            -- end
+                            end
                         end
                         if math.floor(distancefromstart) == 4406 then
-                        --     if math.floor(distancetostop) == 674 then
+                            if math.floor(distancetostop) > 600 then
                                 print('speed up happened')
                                 sLimit = PBDMConf.maxSpeed
                                 TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, 2.0)
                                 SetPedKeepTask(CurrentDriver[1], true)
-                        --     end
+                            end
                         end
 
                     end
