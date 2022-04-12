@@ -7,7 +7,7 @@ PBDMConf = {
     slowSpeed = 5.0,
     citySpeed = 15.0,
     maxSpeed = 60.0,
-    stopDistance = 0.0
+    stopDistance = 1.0
 }
 --
 pedGroup = nil
@@ -320,7 +320,7 @@ Citizen.CreateThread(function()
                             end
                         end
                         if math.floor(distancefromstart) == 4406 then
-                            if math.floor(distancetostop) > 600 then
+                            if math.floor(distancetostop) > 690 then
                                 print('speed up happened')
                                 sLimit = PBDMConf.maxSpeed
                                 TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
