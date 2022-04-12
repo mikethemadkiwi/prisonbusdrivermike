@@ -362,7 +362,7 @@ Citizen.CreateThread(function()
                                 SetPedKeepTask(CurrentDriver[1], true)
                             end
                         end
-                        if math.floor(distancefromstart) == 4390 then
+                        if math.floor(distancefromstart) == 4370 then
                             if math.floor(distancetostop) > 670 then
                                 sLimit = PBDMConf.maxSpeed
                                 TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
