@@ -138,13 +138,13 @@ end
 function DeleteLastBusAndDriver()
     if CurrentPbus ~= nil then
         if DoesEntityExist(CurrentPbus[1]) then
-            while IsPedInVehicle(PlayerPedId(), CurrentPbus[1], false) do
+            if IsPedInVehicle(PlayerPedId(), CurrentPbus[1], false) then
                 TaskLeaveVehicle(PlayerPedId(), CurrentPbus[1], 0)
             end
             NetworkFadeOutEntity(CurrentPbus[1],true, false)
-            -- while NetworkIsEntityFading(CurrentPbus[1]) do      
-            --     Citizen.Wait(100)
-            -- end
+            while NetworkIsEntityFading(CurrentPbus[1]) do      
+                Citizen.Wait(100)
+            end
             DeleteEntity(CurrentDriver[1])
             DeleteEntity(CurrentPbus[1])
         end
