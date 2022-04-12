@@ -392,9 +392,10 @@ Citizen.CreateThread(function()
                     DeleteLastBusAndDriver()
                 end
             end            
-            if IsPedInAnyVehicle(PlayerPedId(), true) == true then
+            if IsPedInAnyVehicle(PlayerPedId(), true) then
                 if CanDrive == true then
                     local veh = GetVehiclePedIsIn(PlayerPedId(), false)
+                    print(veh, buspass)
                     if veh == buspass then
                         print('no get out of car')
                         DisableControlAction(0, 75, true)  -- Disable exit vehicle
