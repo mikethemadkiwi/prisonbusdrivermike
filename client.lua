@@ -259,7 +259,7 @@ end)
 --
 Citizen.CreateThread(function()
 	while true do
-		Citizen.Wait(1000)
+		Citizen.Wait(10000)
 		if NetworkIsPlayerActive(PlayerId()) then
             if CurrentPbus ~= nil then                
                 if CanDrive == true then
@@ -293,39 +293,57 @@ Citizen.CreateThread(function()
                     if CurrentDepot[2].uid == 'prisonbus_1' then
                         if math.floor(distancefromstart) == 45 then
                             sLimit = PBDMConf.citySpeed
+                            TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
+                            SetPedKeepTask(CurrentDriver[1], true)
                         end
                         if math.floor(distancefromstart) == 100 then
                             sLimit = PBDMConf.maxSpeed
+                            TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
+                            SetPedKeepTask(CurrentDriver[1], true)
                         end
                         if math.floor(distancetostop) == 400 then
                             sLimit = PBDMConf.citySpeed
+                            TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
+                            SetPedKeepTask(CurrentDriver[1], true)
                         end
                         if math.floor(distancetostop) == 35 then
                             sLimit = PBDMConf.slowSpeed
+                            TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
+                            SetPedKeepTask(CurrentDriver[1], true)
                         end
                     end
                     ------ PRISON BUS 2
                     if CurrentDepot[2].uid == 'prisonbus_2' then
                         if math.floor(distancefromstart) == 30 then
                             sLimit = PBDMConf.citySpeed
+                            TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
+                            SetPedKeepTask(CurrentDriver[1], true)
                         end
                         if math.floor(distancefromstart) == 400 then
                             sLimit = PBDMConf.maxSpeed
+                            TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
+                            SetPedKeepTask(CurrentDriver[1], true)
                         end 
                         if math.floor(distancefromstart) == 4298 then
                             if math.floor(distancetostop) > 600 then
-                                print('slow down happened')
+                                -- print('slow down happened')
                                 sLimit = PBDMConf.slowSpeed
+                                TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
+                                SetPedKeepTask(CurrentDriver[1], true)
                             end
                         end
                         if math.floor(distancefromstart) == 4390 then
                             if math.floor(distancetostop) > 670 then
-                                print('speed up happened')
+                                -- print('speed up happened')
                                 sLimit = PBDMConf.maxSpeed
+                                TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
+                                SetPedKeepTask(CurrentDriver[1], true)
                             end
                         end
                         if math.floor(distancetostop) == 75 then
                             sLimit = PBDMConf.creepSpeed
+                            TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
+                            SetPedKeepTask(CurrentDriver[1], true)
                         end               
 
                     end  
