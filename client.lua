@@ -1,9 +1,9 @@
 pZoneDebug = true
 PBDMConf = {
 	busModel='pbus',
-    -- drivingStyle = 786603,
+    -- drivingStyle = 786603, -- apparently. "normal"... dude drives like a he has axiety of touching ANYTHING
     drivingStyle = 524697,
-    -- drivingStyle = 411,
+    -- drivingStyle = 411, -- nice but can't overtake so causes LOOONG drive loops to avoid traffic ahead of it.
     creepSpeed = 2.5,
     slowSpeed = 5.0,
     citySpeed = 15.0,
@@ -136,6 +136,8 @@ function spawnBusAtDepot(busmodel, x, y, z, heading, driverPed, route, cb)
 end
 --
 function DeleteLastBusAndDriver()
+    CanDrive = false
+    ShouldEnd = false
     if CurrentPbus ~= nil then
         if DoesEntityExist(CurrentPbus[1]) then
             if IsPedInVehicle(PlayerPedId(), CurrentPbus[1], false) then
@@ -174,10 +176,7 @@ end
 RegisterNetEvent('pbdm:createbus')
 AddEventHandler('pbdm:createbus', function(bObj)
     CurrentDepot = bObj
-    -- check for existing bus i own and delete.
     DeleteLastBusAndDriver()
-    CanDrive = false
-    ShouldEnd = false
 	-- Driver
 	local bDriver = spawnBusDriver(bObj[2], function(driverData)
         CurrentDriver = driverData
@@ -265,14 +264,8 @@ end)
 --
 RegisterNetEvent('pbdm:delclientpass')
 AddEventHandler('pbdm:delclientpass', function(bId)
-    -- local buspass = NetworkGetEntityFromNetworkId(bId[2])  
     PassengerZones[bId[2]]:destroy()
 end)
-
-
-
-
-
 --
 Citizen.CreateThread(function()
 	while true do
