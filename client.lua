@@ -279,6 +279,28 @@ Citizen.CreateThread(function()
                         TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, 2.0)
                     --     -- SetPedKeepTask(CurrentDriver[1], true)
                     end
+                    if CurrentDepot[2].uid == 'prisonbus_2' then
+                        
+                        if math.floor(distancefromstart) == 4308 then
+                            if math.floor(distancetostop) == 630 then
+                                print('slow down happened')
+
+                                sLimit = PBDMConf.creepSpeed
+                                TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, 2.0)
+                            --     -- SetPedKeepTask(CurrentDriver[1], true)
+                            end
+                        end
+                        if math.floor(distancefromstart) == 4406 then
+                            if math.floor(distancetostop) == 674 then
+                                print('speed up happened')
+
+                                sLimit = PBDMConf.maxSpeed
+                                TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, 2.0)
+                            --     -- SetPedKeepTask(CurrentDriver[1], true)
+                            end
+                        end
+
+                    end
                     
                 else
                     -- print('yes bus. but not moving.')
