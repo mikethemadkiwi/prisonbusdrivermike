@@ -140,6 +140,10 @@ function DeleteLastBusAndDriver()
             if IsPedInVehicle(PlayerPedId(), CurrentPbus[1], false) then
                 TaskLeaveVehicle(PlayerPedId(), CurrentPbus[1], 0)
             end
+            NetworkFadeOutEntity(CurrentPbus[1],true, false)
+            while NetworkIsEntityFading(CurrentPbus[1])        
+                Citizen.Wait(100)
+            end
             DeleteEntity(CurrentDriver[1])
             DeleteEntity(CurrentPbus[1])
         end
@@ -368,7 +372,7 @@ Citizen.CreateThread(function()
                     for i = 0, 1 do
                         SetVehicleDoorOpen(CurrentPbus[1], i, false)
                     end                     
-                    -- DeleteBusAndDriver(CurrentPbus[1], CurrentDriver[1])
+                    DeleteBusAndDriver(CurrentPbus[1], CurrentDriver[1])
                 end
             end
         end
