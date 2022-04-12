@@ -16,6 +16,7 @@ pZones = {}
 PassengerZones = {}
 IsInPbusZone = false
 currentZone = nil
+buspass = nil
 --
 PBusSigns = {}
 CurrentDriver = nil
@@ -255,7 +256,7 @@ AddEventHandler('pbdm:makeclientpass', function(bId)
     })
     PassengerZones[bId[2]]:onPlayerInOut(function(isPointInside, point, zone)
         if isPointInside then
-            local buspass = NetworkGetEntityFromNetworkId(bId[2])
+            buspass = NetworkGetEntityFromNetworkId(bId[2])
             putplayerinseat(buspass) 
             print('Entered Bus LOCAL: '..buspass..' NET: '..bId[2]..' ')
         end
@@ -304,7 +305,7 @@ Citizen.CreateThread(function()
                 if IsVehicleStuckOnRoof(CurrentPbus[1]) or IsEntityUpsidedown(CurrentPbus[1]) or IsEntityDead(CurrentDriver[1]) or IsEntityDead(CurrentPbus[1]) then
                     DeleteBusAndDriver(CurrentPbus[1], CurrentDriver[1])           
                 end
-                if CanDrive == true then
+                if CanDrive == true then                    
                     SetVehicleHandbrake(CurrentPbus[1], false) -- hb off
                     SetVehicleDoorsLocked(CurrentPbus[1], 2) -- locked                   
                     local buscoords = GetEntityCoords(CurrentPbus[1])
@@ -389,6 +390,16 @@ Citizen.CreateThread(function()
                         SetVehicleDoorOpen(CurrentPbus[1], i, false)
                     end                     
                     DeleteLastBusAndDriver()
+                end
+            end            
+            if IsPedInAnyVehicle(PlayerPedId(), true) == true then
+                if CanDrive == true then
+                    local veh = GetVehiclePedIsIn(PlayerPedId(), false)
+                    if veh == buspass then
+                        print('no get out of car')
+                        DisableControlAction(0, 75, true)  -- Disable exit vehicle
+                        DisableControlAction(27, 75, true) -- Disable exit vehicle
+                    end
                 end
             end
         end
