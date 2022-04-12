@@ -294,7 +294,7 @@ Citizen.CreateThread(function()
                             SetPedKeepTask(CurrentDriver[1], true)
                         end
 
-                        if math.floor(distancetostop) == 75 then
+                        if math.floor(distancetostop) == 35 then
                             sLimit = PBDMConf.slowSpeed
                             TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
                             SetPedKeepTask(CurrentDriver[1], true)
@@ -341,7 +341,8 @@ Citizen.CreateThread(function()
 
                     end
 
-                    if math.floor(distancetostop) < 2.0 then
+                    -- ALL BUSES
+                    if math.floor(distancetostop) < 4.0 then
                         DeleteBusAndDriver(CurrentPbus[1], CurrentDriver[1])
                     end
                     
