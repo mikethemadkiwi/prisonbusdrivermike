@@ -342,7 +342,7 @@ Citizen.CreateThread(function()
                     end
 
                     -- ALL BUSES
-                    if math.floor(distancetostop) < 4.0 then
+                    if math.floor(distancetostop) < 5.0 then
                         DeleteBusAndDriver(CurrentPbus[1], CurrentDriver[1])
                     end
                     
