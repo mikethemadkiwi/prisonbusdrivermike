@@ -259,7 +259,7 @@ end)
 --
 Citizen.CreateThread(function()
 	while true do
-		Citizen.Wait(0)
+		Citizen.Wait(5000)
 		if NetworkIsPlayerActive(PlayerId()) then
             if CurrentPbus ~= nil then
                 if IsVehicleStuckOnRoof(CurrentPbus[1]) or IsEntityUpsidedown(CurrentPbus[1]) or IsEntityDead(CurrentDriver[1]) or IsEntityDead(CurrentPbus[1]) then
