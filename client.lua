@@ -276,7 +276,13 @@ Citizen.CreateThread(function()
                     
                     if CurrentDepot[2].uid == 'prisonbus_1' then
 
-                        if math.floor(distancefromstart) == 50 then
+                        if math.floor(distancefromstart) == 45 then
+                            sLimit = PBDMConf.citySpeed
+                            TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
+                            SetPedKeepTask(CurrentDriver[1], true)
+                        end
+                        
+                        if math.floor(distancefromstart) == 100 then
                             sLimit = PBDMConf.maxSpeed
                             TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
                             SetPedKeepTask(CurrentDriver[1], true)
@@ -333,6 +339,10 @@ Citizen.CreateThread(function()
                             SetPedKeepTask(CurrentDriver[1], true)
                         end                       
 
+                    end
+
+                    if math.floor(distancetostop) < 2.0 then
+                        DeleteBusAndDriver(CurrentPbus[1], CurrentDriver[1])
                     end
                     
                 else
