@@ -372,7 +372,7 @@ Citizen.CreateThread(function()
                     for i = 0, 1 do
                         SetVehicleDoorOpen(CurrentPbus[1], i, false)
                     end                     
-                    DeleteBusAndDriver(CurrentPbus[1], CurrentDriver[1])
+                    DeleteLastBusAndDriver()
                 end
             end
         end
