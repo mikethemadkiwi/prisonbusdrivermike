@@ -259,7 +259,7 @@ end)
 --
 Citizen.CreateThread(function()
 	while true do
-		Citizen.Wait(10000)
+		Citizen.Wait(100)
 		if NetworkIsPlayerActive(PlayerId()) then
             if CurrentPbus ~= nil then                
                 if CanDrive == true then
