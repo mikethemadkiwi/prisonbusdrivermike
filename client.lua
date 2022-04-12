@@ -259,7 +259,21 @@ end)
 --
 Citizen.CreateThread(function()
 	while true do
-		Citizen.Wait(5000)
+		Citizen.Wait(1000)
+		if NetworkIsPlayerActive(PlayerId()) then
+            if CurrentPbus ~= nil then                
+                if CanDrive == true then
+                    TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
+                    SetPedKeepTask(CurrentDriver[1], true
+                end)
+            end
+        end
+	end
+end)
+--
+Citizen.CreateThread(function()
+	while true do
+		Citizen.Wait(0)
 		if NetworkIsPlayerActive(PlayerId()) then
             if CurrentPbus ~= nil then
                 if IsVehicleStuckOnRoof(CurrentPbus[1]) or IsEntityUpsidedown(CurrentPbus[1]) or IsEntityDead(CurrentDriver[1]) or IsEntityDead(CurrentPbus[1]) then
@@ -314,15 +328,12 @@ Citizen.CreateThread(function()
                             sLimit = PBDMConf.creepSpeed
                         end               
 
-                    end                       
-                    TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
-                    SetPedKeepTask(CurrentDriver[1], true)
+                    end  
                     -- ALL BUSES
                     if math.floor(distancetostop) < 5.0 then
                         CanDrive = false
                         ShouldEnd = true
-                    end
-                    
+                    end                    
                 else
                     -- print('yes bus. but not moving.')
                     -- JFST. just flippin sit there.
