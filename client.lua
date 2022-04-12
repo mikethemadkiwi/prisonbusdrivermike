@@ -252,7 +252,7 @@ end)
 RegisterNetEvent('pbdm:makeclientpass')
 AddEventHandler('pbdm:makeclientpass', function(bId)
     -- SetVehicleIsConsideredByPlayer(buspass, false)
-    local pCoords = vector3(bId[3].zones.passenger.x, bId[3].zones.passenger.y, bId[3].zones.passenger.z)
+    local pCoords = vector3(bId[3][2].zones.passenger.x, bId[3][2].zones.passenger.y, bId[3][2].zones.passenger.z)
     PassengerZones[bId[2]] = CircleZone:Create(pCoords, 1.0, {
         name="passengerZone",
         useZ=false,
