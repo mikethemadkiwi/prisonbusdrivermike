@@ -265,7 +265,7 @@ Citizen.CreateThread(function()
                     local buscoords = GetEntityCoords(CurrentPbus[1])
                     local distancefromstart = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.departure.x, CurrentDepot[2].zones.departure.y, CurrentDepot[2].zones.departure.z, false)
                     local distancetostop = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, false)     
-                    drawOnScreen2D('DFS:[ '..distancefromstart..' ] DTS:[ '..distancetostop..' ] @ '..sLimit..' Speed ', 255, 255, 255, 255, 0.45, 0.45, 0.6)
+                    drawOnScreen2D('DFS:[ '..distancefromstart..' ]\nDTS:[ '..distancetostop..' ]\n@ '..sLimit..' Speed ', 255, 255, 255, 255, 0.45, 0.45, 0.6)
                     -- -- do our ai logic from current location to destination loca.
                     if math.floor(distancefromstart) == 100 then
                         sLimit = 30.0
