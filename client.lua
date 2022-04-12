@@ -264,7 +264,7 @@ AddEventHandler('pbdm:makeclientpass', function(bId)
             -- putplayerinseat(buspass) 
             print('Entered Bus LOCAL: '..buspass..' NET: '..bId[2]..' ')
         -- end
-    end)	
+    -- end)	
 end)
 --
 RegisterNetEvent('pbdm:delclientpass')
