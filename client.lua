@@ -1,4 +1,4 @@
-pZoneDebug = true
+pZoneDebug = false
 PBDMConf = {
 	busModel='pbus',
     -- drivingStyle = 786603, -- apparently. "normal"... dude drives like a he has axiety of touching ANYTHING
@@ -143,7 +143,7 @@ function DeleteLastBusAndDriver()
             if IsPedInVehicle(PlayerPedId(), CurrentPbus[1], false) then
                 TaskLeaveVehicle(PlayerPedId(), CurrentPbus[1], 0)
             end
-            Citizen.Wait(5000)
+            Citizen.Wait(10000)
             NetworkFadeOutEntity(CurrentPbus[1],true, false)
             while NetworkIsEntityFading(CurrentPbus[1]) do      
                 Citizen.Wait(100)
