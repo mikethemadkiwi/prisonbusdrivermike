@@ -2,7 +2,9 @@ pZoneDebug = true
 PBDMConf = {
 	busModel='pbus',
     -- drivingStyle = 786603
-    drivingStyle = 411
+    drivingStyle = 411,
+    creepSpeed = 2.5,
+    maxSpeed = 15.0
 }
 --
 pedGroup = nil
@@ -183,12 +185,12 @@ AddEventHandler('pbdm:createbus', function(bObj)
             for i = 0, 1 do
                 SetVehicleDoorShut(CurrentPbus[1], i, false)
             end 
-            CanDrive = true
-            sLimit = 5.0
-            TaskVehicleDriveWander(CurrentDriver[1], CurrentPbus[1], sLimit, 411)
-            SetDriveTaskDrivingStyle(CurrentDriver[1], 411)
-            TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, 411, 5.0)
-            -- TaskVehicleDriveToCoord(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, 30.0, 1.0, GetHashKey(CurrentPbus[1]), 411, 1.0, 1)
+            CanDrive = true 
+            sLimit = PBDMConf.creepSpeed
+            TaskVehicleDriveWander(CurrentDriver[1], CurrentPbus[1], sLimit, PBDMConf.drivingStyle)
+            SetDriveTaskDrivingStyle(CurrentDriver[1], PBDMConf.drivingStyle)
+            TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, 2.0)
+            -- TaskVehicleDriveToCoord(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, 30.0, 1.0, GetHashKey(CurrentPbus[1]), PBDMConf.drivingStyle, 1.0, 1)
             -- SetPedKeepTask(CurrentDriver[1], true)
 		end)
    	end)
@@ -268,13 +270,13 @@ Citizen.CreateThread(function()
                     drawOnScreen2D('DFS:[ '..distancefromstart..' ]\nDTS:[ '..distancetostop..' ]\n@ '..sLimit..' Speed ', 255, 255, 255, 255, 0.45, 0.45, 0.6)
                     -- -- do our ai logic from current location to destination loca.
                     if math.floor(distancefromstart) == 75 then
-                        sLimit = 30.0
-                        TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, 411, 1.0)
+                        sLimit = PBDMConf.maxSpeed
+                        TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, 2.0)
                     --     -- SetPedKeepTask(CurrentDriver[1], true)
                     end
                     if math.floor(distancetostop) == 75 then
-                        sLimit = 5.0
-                        TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, 411, 5.0)
+                        sLimit = PBDMConf.creepSpeed
+                        TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, 2.0)
                     --     -- SetPedKeepTask(CurrentDriver[1], true)
                     end
                     
