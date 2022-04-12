@@ -264,8 +264,8 @@ Citizen.CreateThread(function()
             if CurrentPbus ~= nil then                
                 if CanDrive == true then
                     TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
-                    SetPedKeepTask(CurrentDriver[1], true
-                end)
+                    SetPedKeepTask(CurrentDriver[1], true)
+                end
             end
         end
 	end
