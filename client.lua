@@ -270,23 +270,43 @@ Citizen.CreateThread(function()
                     local distancefromstart = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.departure.x, CurrentDepot[2].zones.departure.y, CurrentDepot[2].zones.departure.z, false)
                     local distancetostop = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, false)     
                     drawOnScreen2D('DFS:[ '..distancefromstart..' ]\nDTS:[ '..distancetostop..' ]\n@ '..sLimit..' Speed ', 255, 255, 255, 255, 0.45, 0.45, 0.6)
-                    -- -- do our ai logic from current location to destination loca.
-                    if math.floor(distancefromstart) == 75 then
-                        sLimit = PBDMConf.maxSpeed
-                        TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, 2.0)
-                        SetPedKeepTask(CurrentDriver[1], true)
+                 
+                    ------ PRISON BUS 1
+                    
+                    if CurrentDepot[2].uid == 'prisonbus_1' then
+
+                        if math.floor(distancefromstart) == 50 then
+                            sLimit = PBDMConf.maxSpeed
+                            TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, 2.0)
+                            SetPedKeepTask(CurrentDriver[1], true)
+                        end
+
+                        if math.floor(distancetostop) == 75 then
+                            sLimit = PBDMConf.slowSpeed
+                            TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, 2.0)
+                            SetPedKeepTask(CurrentDriver[1], true)
+                        end
+
                     end
-                    if math.floor(distancetostop) == 75 then
-                        sLimit = PBDMConf.creepSpeed
-                        TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, 2.0)
-                        SetPedKeepTask(CurrentDriver[1], true)
-                    end
+
+                    ------ PRISON BUS 2
+
                     if CurrentDepot[2].uid == 'prisonbus_2' then
                         
+                        if math.floor(distancefromstart) == 50 then
+                            sLimit = PBDMConf.maxSpeed
+                            TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, 2.0)
+                            SetPedKeepTask(CurrentDriver[1], true)
+                        end
+                        if math.floor(distancetostop) == 75 then
+                            sLimit = PBDMConf.creepSpeed
+                            TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, 2.0)
+                            SetPedKeepTask(CurrentDriver[1], true)
+                        end                        
                         if math.floor(distancefromstart) == 4308 then
                             -- if math.floor(distancetostop) == 630 then
                                 print('slow down happened')
-                                sLimit = PBDMConf.creepSpeed
+                                sLimit = PBDMConf.slowSpeed
                                 TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, 2.0)
                                 SetPedKeepTask(CurrentDriver[1], true)
                             -- end
