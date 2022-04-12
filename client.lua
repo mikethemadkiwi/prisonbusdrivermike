@@ -4,7 +4,9 @@ PBDMConf = {
     -- drivingStyle = 786603
     drivingStyle = 411,
     creepSpeed = 2.5,
-    maxSpeed = 30.0
+    slowSpeed = 5.0,
+    citySpeed = 15.0,
+    maxSpeed = 60.0
 }
 --
 pedGroup = nil
@@ -282,20 +284,20 @@ Citizen.CreateThread(function()
                     if CurrentDepot[2].uid == 'prisonbus_2' then
                         
                         if math.floor(distancefromstart) == 4308 then
-                            if math.floor(distancetostop) == 630 then
+                            -- if math.floor(distancetostop) == 630 then
                                 print('slow down happened')
                                 sLimit = PBDMConf.creepSpeed
                                 TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, 2.0)
                                 SetPedKeepTask(CurrentDriver[1], true)
-                            end
+                            -- end
                         end
                         if math.floor(distancefromstart) == 4406 then
-                            if math.floor(distancetostop) == 674 then
+                        --     if math.floor(distancetostop) == 674 then
                                 print('speed up happened')
                                 sLimit = PBDMConf.maxSpeed
                                 TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, 2.0)
                                 SetPedKeepTask(CurrentDriver[1], true)
-                            end
+                        --     end
                         end
 
                     end
