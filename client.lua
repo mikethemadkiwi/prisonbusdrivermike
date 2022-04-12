@@ -31,7 +31,7 @@ PrisonDepot = {
         aZone = 153,
         zones = {
             menu = {x = 1817.217, y = 2599.202, z = 44.523},
-            passenger = {x = 1801.599, y = 2609.289, z = 44.565},
+            passenger = {x = 1801.579, y = 2606.286, z = 44.565},
             departure = {x = 1800.453, y = 2607.865, z = 45.823, h = 269.899}, -- location leaving FROM
             recieving = {x = 472.07, y = -1023.654, z = 28.416, h = 279.469} -- location heading TO
         },
