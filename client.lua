@@ -312,7 +312,7 @@ Citizen.CreateThread(function()
                         if math.floor(distancefromstart) == 400 then
                             sLimit = PBDMConf.maxSpeed
                         end 
-                        if math.floor(distancefromstart) == 4308 then
+                        if math.floor(distancefromstart) == 4298 then
                             if math.floor(distancetostop) > 600 then
                                 print('slow down happened')
                                 sLimit = PBDMConf.slowSpeed
