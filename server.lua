@@ -32,7 +32,7 @@ RegisterServerEvent('pbdm:requestbus')
 AddEventHandler('pbdm:requestbus', function(bData)
     table.insert(ActivePrisonBuses, bData)
 end)
-
+--
 RegisterServerEvent('pbdm:makepass')
 AddEventHandler('pbdm:makepass', function(bId)
     TriggerClientEvent('pbdm:makeclientpass', -1, bId)
@@ -40,14 +40,14 @@ AddEventHandler('pbdm:makepass', function(bId)
         print('['.. source ..'] spawned BusId:'.. bId[1] ..' NetId:'.. bId[2] ..'')
     end
 end)
-
+--
 RegisterServerEvent('pbdm:passentered')
 AddEventHandler('pbdm:passentered', function(bId)
     if ServerDebug == true then
         print('['.. source ..'] entered BusId:'.. bId[1] ..'')
     end
 end)
-
+--
 RegisterServerEvent('pbdm:delpass')
 AddEventHandler('pbdm:delpass', function(bId)
     TriggerClientEvent('pbdm:delclientpass', -1, bId)
