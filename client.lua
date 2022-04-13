@@ -10,7 +10,7 @@ PBDMConf = {
     slowSpeed = 5.0,
     citySpeed = 15.0,
     maxSpeed = 30.0,
-    stopDistance = 1.0
+    stopDistance = 1.0,
     passengerWaitTime = 60 * 1000 -- 60 seconds.
 }
 --
