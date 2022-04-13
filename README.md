@@ -10,6 +10,9 @@ locations between mission row Rear Entrance and BolingBroke Prison.
 
 ### Usage  
 1. install and run. no setup needed!   
+### debug info  
+enabling "ClientDebug" or "ServerDebug" will enabled verbosity for prisonbus drivermike, showing netid's and onscreen distances.  
+you can alter bus model and speeds used in this script via the config.lua  
 
 ### Things planned to fix.   
 1. The god awful AI. it's not TERRIBLE. but it's not great either. 
@@ -17,6 +20,6 @@ locations between mission row Rear Entrance and BolingBroke Prison.
 ### Thanks to:   
 1. 19firefox84 - endless bus rider. on and off on and off.... buses in our dreams.
 2. MrJDucky Esq. III - bug testing and endless bus rider.
-2. Zvinqq - bug testing and endless bus rider.
+2. schusterUK - constant 2nd set of eyes on code.
 
 ### [Video Showcase](https://youtu.be/pJ-H5J8DZkw)
