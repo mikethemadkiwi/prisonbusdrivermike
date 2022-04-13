@@ -24,6 +24,7 @@ CurrentPbus = nil
 CurrentDepot = nil
 CanDrive = false
 ShouldEnd = false
+AmInBus = false
 sLimit = 5.0
 PrisonDepot = { 
     {
@@ -139,6 +140,7 @@ end
 function DeleteLastBusAndDriver()
     CanDrive = false
     ShouldEnd = false
+    AmInBus = false
     if CurrentPbus ~= nil then
         if DoesEntityExist(CurrentPbus[1]) then
             if IsPedInVehicle(PlayerPedId(), CurrentPbus[1], false) then
@@ -168,7 +170,8 @@ function putplayerinseat(busid)
         if isfree == 1 then
             local playerPed = PlayerPedId()
             TaskEnterVehicle(playerPed, busid, 15000, j, 2.0, 1, 0)
-            TriggerServerEvent('bdm:passentered', {busid})
+            TriggerServerEvent('bdm:passentered', {busid})            
+            AmInBus = true
             break
         end        
     end
@@ -272,12 +275,14 @@ Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(0)
 		if IsInPbusZone then
-			if IsControlJustPressed(0, 51) then
-				CallBusAtZone(currentZone)
-			end
-			if not IsNuiFocused() then
-				drawOnScreen2D('~y~Press [ ~g~E~y~ ] to call a Prison Bus.', 255, 255, 255, 255, 0.40, 0.45, 0.6)
-			end
+            if CurrentPbus == nil then
+                if IsControlJustPressed(0, 51) then
+                    CallBusAtZone(currentZone)
+                end
+                if not IsNuiFocused() then
+                    drawOnScreen2D('~y~Press [ ~g~E~y~ ] to call a Prison Bus.', 255, 255, 255, 255, 0.40, 0.45, 0.6)
+                end
+            end
 		end
 	end
 end)
@@ -385,15 +390,15 @@ Citizen.CreateThread(function()
                     SetVehicleEngineOn(CurrentPbus[1], true, true, false)
                 end
                 if ShouldEnd == true then
-                    SetVehicleDoorsLocked(CurrentPbus[1], 1) -- unlocked                    
+                    SetVehicleDoorsLocked(CurrentPbus[1], 1) -- unlocked 
                     for i = 0, 1 do
                         SetVehicleDoorOpen(CurrentPbus[1], i, false)
-                    end                     
+                    end              
                     DeleteLastBusAndDriver()
                 end
             end            
             if IsPedInAnyVehicle(PlayerPedId(), true) then
-                if CanDrive == true then
+                if AmInBus == true then
                     local veh = GetVehiclePedIsIn(PlayerPedId(), false)
                     if veh == buspass then
                         DisableControlAction(0, 75, true)  -- Disable exit vehicle
