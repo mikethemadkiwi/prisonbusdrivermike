@@ -11,5 +11,7 @@ client_scripts {
   '@PolyZone/CircleZone.lua',
   '@PolyZone/ComboZone.lua'
 }
+client_script 'config.lua'
 client_script 'client.lua'
+server_script 'config.lua'
 server_script 'server.lua'

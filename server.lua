@@ -1,6 +1,4 @@
 --
-ServerDebug = false
---
 function AuthCheck(source)
     -- put your qbcore or esx code for job rank or role here.
     -- if the player has a rank, and it matches the one you want...
