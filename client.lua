@@ -11,6 +11,7 @@ PBDMConf = {
     citySpeed = 15.0,
     maxSpeed = 30.0,
     stopDistance = 1.0
+    passengerWaitTime = 60 * 1000 -- 60 seconds.
 }
 --
 pedGroup = nil
@@ -203,7 +204,7 @@ AddEventHandler('pbdm:createbus', function(bObj)
                 SetVehicleDoorOpen(CurrentPbus[1], i, false)
             end 
             TriggerServerEvent('pbdm:makepass', {CurrentPbus[1], CurrentPbus[2], bObj})  
-            Citizen.Wait(60000)
+            Citizen.Wait(PBDMConf.passengerWaitTime)
             TriggerServerEvent('pbdm:delpass', {CurrentPbus[1], CurrentPbus[2], bObj})
             for i = 0, 1 do
                 SetVehicleDoorShut(CurrentPbus[1], i, false)
