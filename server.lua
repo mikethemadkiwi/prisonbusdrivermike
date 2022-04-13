@@ -1,4 +1,6 @@
 --
+ServerDebug = true
+--
 function AuthCheck(source)
     -- put your qbcore or esx code for job rank or role here.
     -- if the player has a rank, and it matches the one you want...
@@ -17,7 +19,9 @@ AddEventHandler('pbdm:requestbus', function(zData)
 
     --
     if AuthCheck(source) then
-        print('Prison Bus Requested ['..zData.name..'] - '..source..'')
+        if ServerDebug == true then
+            print('Prison Bus Requested ['..zData.name..'] - '..source..'')
+        end
         TriggerClientEvent('pbdm:createbus', source, tmpBusObj)
     else
         TriggerClientEvent('pbdm:errormsg', source, 'unable to spawn you a prison bus. (perms) ')
@@ -32,12 +36,16 @@ end)
 RegisterServerEvent('pbdm:makepass')
 AddEventHandler('pbdm:makepass', function(bId)
     TriggerClientEvent('pbdm:makeclientpass', -1, bId)
-    print('['.. source ..'] spawned BusId:'.. bId[1] ..' NetId:'.. bId[2] ..'')
+    if ServerDebug == true then
+        print('['.. source ..'] spawned BusId:'.. bId[1] ..' NetId:'.. bId[2] ..'')
+    end
 end)
 
 RegisterServerEvent('pbdm:passentered')
 AddEventHandler('pbdm:passentered', function(bId)
-    print('['.. source ..'] entered BusId:'.. bId[1] ..'')
+    if ServerDebug == true then
+        print('['.. source ..'] entered BusId:'.. bId[1] ..'')
+    end
 end)
 
 RegisterServerEvent('pbdm:delpass')

@@ -1,4 +1,6 @@
-pZoneDebug = true
+--
+ClientDebug = true
+--
 PBDMConf = {
 	busModel='pbus',
     -- drivingStyle = 786603, -- apparently. "normal"... dude drives like a he has axiety of touching ANYTHING
@@ -78,7 +80,9 @@ end
 --
 function CallBusAtZone(zone)
 	local zData = zone.data
-	print('Bus requested at ['..zData.uid..']')
+    if ClientDebug == true then
+	    print('Bus requested at ['..zData.uid..']')
+    end
 	TriggerServerEvent('pbdm:requestbus', zData)
 end
 --
@@ -101,7 +105,9 @@ function spawnBusDriver(Depot, cb)
         SetPedRelationshipGroupHash(activeDriver, pedGroup)
         SetCanAttackFriendly(activeDriver, false, false)
         SetPedCombatMovement(activeDriver, 0)
-        print('driver spawn:'.. activeDriver .. ' ['..activeDriverNetId..']')
+        if ClientDebug == true then
+	        print('driver spawn:'.. activeDriver .. ' ['..activeDriverNetId..']')
+        end
         if cb ~= nil then
 			cb({activeDriver, activeDriverNetId})
 		end
@@ -130,7 +136,9 @@ function spawnBusAtDepot(busmodel, x, y, z, heading, driverPed, route, cb)
 			Citizen.Wait(0)
 		end
 		SetVehRadioStation(activeBus, 'OFF')
-        print('bus spawn:'.. activeBus .. ' netid: '.. activeBusNetId ..'')
+        if ClientDebug == true then
+            print('bus spawn:'.. activeBus .. ' netid: '.. activeBusNetId ..'')
+        end
 		if cb ~= nil then
 			cb({activeBus, activeBusNetId})
 		end
@@ -186,7 +194,9 @@ AddEventHandler('pbdm:createbus', function(bObj)
         CurrentDriver = driverData
 		local bVehicle = spawnBusAtDepot(PBDMConf.busModel, bObj[2].zones.departure.x, bObj[2].zones.departure.y, bObj[2].zones.departure.z, bObj[2].zones.departure.h, driverData[1], 1, function(busData)
             CurrentPbus = busData
-            print('Bus:'..CurrentPbus[1]..' Driver:'..CurrentDriver[1])
+            if ClientDebug == true then
+                print('Bus:'..CurrentPbus[1]..' Driver:'..CurrentDriver[1])
+            end
             TriggerServerEvent('pbdm:createdbusinfo', {CurrentDriver, CurrentPbus, bObj})
             SetPedIntoVehicle(CurrentDriver[1], CurrentPbus[1], -1)    
             for i = 0, 1 do
@@ -213,7 +223,7 @@ Citizen.CreateThread(function()
 		Citizen.Wait(0)	
 		if NetworkIsPlayerActive(PlayerId()) then
 			for j=1, #PrisonDepot do
-				addBusPZones(PrisonDepot[j], 1.0, false, pZoneDebug, {})
+				addBusPZones(PrisonDepot[j], 1.0, false, ClientDebug, {})
 				PBusSigns[j] = CreateObject(-1022684418, PrisonDepot[j].zones.menu.x, PrisonDepot[j].zones.menu.y, PrisonDepot[j].zones.menu.z, false, false, false)					
 			end
 			DepotPolyList = ComboZone:Create(pZones, {name="DepotPolyList", debugPoly=polydebug})
@@ -237,7 +247,9 @@ AddEventHandler("onResourceStart", function(resourceName)
     if GetCurrentResourceName() == resourceName then       
         local v, pGroup = AddRelationshipGroup('bdmDrivers')
         pedGroup = pGroup
-        print('Added Bus group "bdmDrivers" as ['..pedGroup..']')
+        if ClientDebug == true then
+            print('Added Bus group "bdmDrivers" as ['..pedGroup..']')
+        end
     end
 end)
 --
@@ -255,13 +267,15 @@ AddEventHandler('pbdm:makeclientpass', function(bId)
     PassengerZones[bId[2]] = CircleZone:Create(pCoords, 1.0, {
         name="passengerZonePrisoner",
         useZ=false,
-        debugPoly=pZoneDebug
+        debugPoly=ClientDebug
     })
     PassengerZones[bId[2]]:onPlayerInOut(function(isPointInside, point, zone)
         if isPointInside then
             buspass = NetworkGetEntityFromNetworkId(bId[2])
             putplayerinseat(buspass) 
-            print('Entered Bus LOCAL: '..buspass..' NET: '..bId[2]..' ')
+            if ClientDebug == true then
+                print('Entered Bus LOCAL: '..buspass..' NET: '..bId[2]..' ')
+            end
         end
     end)	
 end)
@@ -293,7 +307,9 @@ Citizen.CreateThread(function()
 		if NetworkIsPlayerActive(PlayerId()) then
             if CurrentPbus ~= nil then                
                 if CanDrive == true then
-                    print('AI ['..CurrentDriver[1]..'] Updated')
+                    if ClientDebug == true then
+                        print('AI ['..CurrentDriver[1]..'] Updated')
+                    end
                     TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
                     SetPedKeepTask(CurrentDriver[1], true)
                 end
@@ -316,7 +332,7 @@ Citizen.CreateThread(function()
                     local buscoords = GetEntityCoords(CurrentPbus[1])
                     local distancefromstart = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.departure.x, CurrentDepot[2].zones.departure.y, CurrentDepot[2].zones.departure.z, false)
                     local distancetostop = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, false)     
-                    if pZoneDebug == true then 
+                    if ClientDebug == true then 
                         drawOnScreen2D('Depot: '..CurrentDepot[2].uid..'\nDFS:[ '..distancefromstart..' ]\nDTS:[ '..distancetostop..' ]\n@ '..sLimit..' Speed ', 255, 255, 255, 255, 0.45, 0.45, 0.6)
                     end
                     ------ PRISON BUS 1
