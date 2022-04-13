@@ -1,5 +1,5 @@
 --
-ServerDebug = true
+ServerDebug = false
 --
 function AuthCheck(source)
     -- put your qbcore or esx code for job rank or role here.

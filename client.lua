@@ -1,5 +1,5 @@
 --
-ClientDebug = true
+ClientDebug = false
 --
 PBDMConf = {
 	busModel='pbus',
