@@ -170,7 +170,7 @@ function putplayerinseat(busid)
         if isfree == 1 then
             local playerPed = PlayerPedId()
             TaskEnterVehicle(playerPed, busid, 15000, j, 2.0, 1, 0)
-            TriggerServerEvent('bdm:passentered', {busid})            
+            TriggerServerEvent('pbdm:passentered', {busid})            
             AmInBus = true
             break
         end        

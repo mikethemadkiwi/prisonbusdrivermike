@@ -35,6 +35,11 @@ AddEventHandler('pbdm:makepass', function(bId)
     print('['.. source ..'] spawned BusId:'.. bId[1] ..' NetId:'.. bId[2] ..'')
 end)
 
+RegisterServerEvent('pbdm:passentered')
+AddEventHandler('pbdm:passentered', function(bId)
+    print('['.. source ..'] entered BusId:'.. bId[1] ..'')
+end)
+
 RegisterServerEvent('pbdm:delpass')
 AddEventHandler('pbdm:delpass', function(bId)
     TriggerClientEvent('pbdm:delclientpass', -1, bId)
