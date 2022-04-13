@@ -13,6 +13,9 @@ RegisterServerEvent('pbdm:requestbus')
 AddEventHandler('pbdm:requestbus', function(zData)
     local tmpBusObj = {busid, zData}
     busid = busid + 1
+    -- check if a bus from this depot is already in transit
+
+    --
     if AuthCheck(source) then
         print('Prison Bus Requested ['..zData.name..'] - '..source..'')
         TriggerClientEvent('pbdm:createbus', source, tmpBusObj)
