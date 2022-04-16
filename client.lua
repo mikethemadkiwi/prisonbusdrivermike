@@ -345,13 +345,14 @@ Citizen.CreateThread(function()
                         DisableControlAction(27, 75, true) -- Disable exit vehicle
                     end
                 end
+                --
+                local buscoords = GetEntityCoords(CurrentPbus[1])
+                local distancefromstart = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.departure.x, CurrentDepot[2].zones.departure.y, CurrentDepot[2].zones.departure.z, false)
+                local distancetostop = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, false)     
 
                 if CanDrive == true then
                     SetVehicleHandbrake(CurrentPbus[1], false) -- hb off
                     SetVehicleDoorsLocked(CurrentPbus[1], 2) -- locked                   
-                    local buscoords = GetEntityCoords(CurrentPbus[1])
-                    local distancefromstart = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.departure.x, CurrentDepot[2].zones.departure.y, CurrentDepot[2].zones.departure.z, false)
-                    local distancetostop = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, false)     
                     if ClientDebug == true then 
                         drawOnScreen2D('Depot: '..CurrentDepot[2].uid..'\nDFS:[ '..distancefromstart..' ]\nDTS:[ '..distancetostop..' ]\n@ '..sLimit..' Speed ', 255, 255, 255, 255, 0.45, 0.45, 0.6)
                     end
@@ -418,18 +419,18 @@ Citizen.CreateThread(function()
                             SetPedKeepTask(CurrentDriver[1], true)
                         end               
 
-                    end  
-                    -- ALL BUSES
-                    if math.floor(distancetostop) < 5.0 then
-                        CanDrive = false
-                        SetVehicleDoorsLocked(CurrentPbus[1], 1)
-                        DeleteLastBusAndDriver()
                     end                    
                 -- else -- Candrive = false
                 --     SetVehicleDoorsLocked(CurrentPbus[1], 1) -- unlocked
                 --     TaskVehicleTempAction(CurrentDriver[1], CurrentPbus[1], 6, 2000)
                 --     SetVehicleHandbrake(CurrentPbus[1], true)
                 --     SetVehicleEngineOn(CurrentPbus[1], true, true, false)
+                end  
+                -- ALL BUSES
+                if math.floor(distancetostop) < 5.0 then
+                    CanDrive = false
+                    SetVehicleDoorsLocked(CurrentPbus[1], 1)
+                    DeleteLastBusAndDriver()
                 end
             end
         end
