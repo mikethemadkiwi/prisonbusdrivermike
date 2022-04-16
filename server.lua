@@ -33,7 +33,7 @@ end)
 --
 RegisterServerEvent('pbdm:getoutofbusplz')
 AddEventHandler('pbdm:getoutofbusplz', function(bData)
-    print('oob:'..bData[2]..'')
+    print('oob:'..bData..'')
     TriggerClientEvent('pbdm:oob', -1, bData)
 end)
 --
