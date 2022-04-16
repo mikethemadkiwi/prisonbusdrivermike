@@ -135,10 +135,10 @@ function DeleteLastBusAndDriver()
     AmInBus = false
     if CurrentPbus ~= nil then
         if DoesEntityExist(CurrentPbus[1]) then
-            -- if IsPedInVehicle(PlayerPedId(), CurrentPbus[1], false) then
+            if IsPedInVehicle(PlayerPedId(), CurrentPbus[1], false) then
                 -- TaskLeaveVehicle(PlayerPedId(), CurrentPbus[1], 0)
-            TriggerServerEvent('pbdm:getoutofbusplz', {CurrentPbus})            
-            -- end
+                TriggerServerEvent('pbdm:getoutofbusplz', {CurrentPbus})            
+            end
             Citizen.Wait(PBDMConf.WaitAfterDropoff)
             NetworkFadeOutEntity(CurrentPbus[1],true, false)
             while NetworkIsEntityFading(CurrentPbus[1]) do      
@@ -291,6 +291,7 @@ AddEventHandler('pbdm:oob', function(bId)
     local playerPed = PlayerPedId()
     local isinbus = GetVehiclePedIsIn(playerPed, false)
     local buspass = NetworkGetEntityFromNetworkId(bId[2]) 
+    print(buspass)
     if isinbus == buspass then
         TaskLeaveVehicle(playerPed, buspass, 512)
     end
