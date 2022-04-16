@@ -135,10 +135,7 @@ function DeleteLastBusAndDriver()
     AmInBus = false
     if CurrentPbus ~= nil then
         if DoesEntityExist(CurrentPbus[1]) then
-            -- if IsPedInVehicle(PlayerPedId(), CurrentPbus[1], false) then
-                -- TaskLeaveVehicle(PlayerPedId(), CurrentPbus[1], 256)
-                TriggerServerEvent('pbdm:getoutofbusplz', CurrentPbus[2])            
-            -- end
+            TriggerServerEvent('pbdm:getoutofbusplz', CurrentPbus[2]) 
             Citizen.Wait(PBDMConf.WaitAfterDropoff)
             NetworkFadeOutEntity(CurrentPbus[1],true, false)
             while NetworkIsEntityFading(CurrentPbus[1]) do      
@@ -172,8 +169,8 @@ end
 --
 RegisterNetEvent('pbdm:createbus')
 AddEventHandler('pbdm:createbus', function(bObj)
-    CurrentDepot = bObj
     DeleteLastBusAndDriver()
+    CurrentDepot = bObj
 	-- Driver
 	local bDriver = spawnBusDriver(bObj[2], function(driverData)
         CurrentDriver = driverData
@@ -182,17 +179,14 @@ AddEventHandler('pbdm:createbus', function(bObj)
             if ClientDebug == true then
                 print('Bus:'..CurrentPbus[1]..' Driver:'..CurrentDriver[1])
             end
-            TriggerServerEvent('pbdm:createdbusinfo', {CurrentDriver, CurrentPbus, bObj})
-            SetPedIntoVehicle(CurrentDriver[1], CurrentPbus[1], -1)    
-            for i = 0, 1 do --- this can only be seen partially by the networked players.
-                SetVehicleDoorOpen(CurrentPbus[1], i, false)
-            end 
+            TriggerServerEvent('pbdm:createdbusinfo', {CurrentDriver, CurrentPbus, CurrentDepot})
+            SetPedIntoVehicle(CurrentDriver[1], CurrentPbus[1], -1)
+            TriggerServerEvent('pbdm:busdooropen', {CurrentPbus, true})
             TriggerServerEvent('pbdm:makepass', {CurrentPbus[1], CurrentPbus[2], bObj})  
             Citizen.Wait(PBDMConf.passengerWaitTime)
             TriggerServerEvent('pbdm:delpass', {CurrentPbus[1], CurrentPbus[2], bObj})
-            for i = 0, 1 do
-                SetVehicleDoorShut(CurrentPbus[1], i, false)
-            end 
+            TriggerServerEvent('pbdm:busdooropen', {CurrentPbus, false})
+            -- 
             CanDrive = true 
             sLimit = PBDMConf.creepSpeed
             TaskVehicleDriveWander(CurrentDriver[1], CurrentPbus[1], sLimit, PBDMConf.drivingStyle)
@@ -268,6 +262,21 @@ end)
 RegisterNetEvent('pbdm:delclientpass')
 AddEventHandler('pbdm:delclientpass', function(bId)
     PassengerZones[bId[2]]:destroy()
+end)
+--
+RegisterNetEvent('pbdm:newbus')
+AddEventHandler('pbdm:newbus', function(bData)
+    CurrentDriver = bData[1]
+    CurrentPbus = bData[2]
+    CurrentDepot = bData[3]
+end)
+--
+RegisterNetEvent('pbdm:busdoorstate')
+AddEventHandler('pbdm:busdoorstate', function(state)    
+    local buspass = NetworkGetEntityFromNetworkId(state[1][2])    
+    for i = 0, 1 do
+        SetVehicleDoorShut(busspass, i, state[2])
+    end
 end)
 --
 Citizen.CreateThread(function()

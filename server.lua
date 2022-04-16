@@ -31,6 +31,18 @@ AddEventHandler('pbdm:requestbus', function(bData)
     table.insert(ActivePrisonBuses, bData)
 end)
 --
+RegisterServerEvent('pbdm:createdbusinfo')
+AddEventHandler('pbdm:createdbusinfo', function(bData)
+    -- print('busdoorstate:'..state..'')
+    TriggerClientEvent('pbdm:newBus', -1, bData)
+end)
+--
+RegisterServerEvent('pbdm:busdoorstate')
+AddEventHandler('pbdm:busdoorstate', function(state)
+    print('busdoorstate:'..state..'')
+    TriggerClientEvent('pbdm:busdoorstate', -1, state)
+end)
+--
 RegisterServerEvent('pbdm:getoutofbusplz')
 AddEventHandler('pbdm:getoutofbusplz', function(bData)
     print('oob:'..bData..'')
