@@ -38,7 +38,7 @@ end)
 --
 RegisterServerEvent('pbdm:busdooropen')
 AddEventHandler('pbdm:busdooropen', function(state)
-    print('busdooropen:'..state..'')
+    print('busdooropen:'..state[2]..'')
     TriggerClientEvent('pbdm:busdooropen', -1, state)
 end)
 --
