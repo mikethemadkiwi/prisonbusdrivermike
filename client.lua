@@ -275,7 +275,8 @@ end)
 --
 RegisterNetEvent('pbdm:busdoorstate')
 AddEventHandler('pbdm:busdoorstate', function(state)
-    local buspass = NetworkGetEntityFromNetworkId(state[1][2])    
+    local buspass = NetworkGetEntityFromNetworkId(state[1][2]) 
+    print('Doorstate ['..state[2]..']')   
     for i = 0, 1 do
         SetVehicleDoorShut(busspass, i, state[2])
     end
@@ -301,14 +302,9 @@ RegisterNetEvent('pbdm:oob')
 AddEventHandler('pbdm:oob', function(bId) 
     local playerPed = PlayerPedId()
     local isinbus = GetVehiclePedIsIn(playerPed, false)
-    local buspass = NetworkGetEntityFromNetworkId(bId) 
-    print(buspass)
-    print(isinbus)
+    local buspass = NetworkGetEntityFromNetworkId(bId)
     if isinbus == buspass then
-        print('get out')
         TaskLeaveVehicle(playerPed, buspass, 256)
-    else
-        print('no get out.')
     end
 end)
 --
