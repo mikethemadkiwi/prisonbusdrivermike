@@ -12,6 +12,7 @@ PBDMConf = {
     slowSpeed = 5.0,
     citySpeed = 15.0,
     maxSpeed = 30.0,
-    stopDistance = 1.0,
-    passengerWaitTime = 60 * 1000 -- 60 seconds.
+    stopDistance = 1.0, -- how close to try getting to the location
+    passengerWaitTime = 60 * 1000, -- 60 seconds.
+    WaitAfterDropoff = 30 * 1000 -- time before deleting after dropoff  
 }

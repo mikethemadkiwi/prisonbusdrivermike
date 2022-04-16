@@ -140,7 +140,7 @@ function DeleteLastBusAndDriver()
             if IsPedInVehicle(PlayerPedId(), CurrentPbus[1], false) then
                 TaskLeaveVehicle(PlayerPedId(), CurrentPbus[1], 0)
             end
-            Citizen.Wait(10000)
+            Citizen.Wait(PBDMConf.WaitAfterDropoff)
             NetworkFadeOutEntity(CurrentPbus[1],true, false)
             while NetworkIsEntityFading(CurrentPbus[1]) do      
                 Citizen.Wait(100)
