@@ -267,7 +267,9 @@ end)
 RegisterNetEvent('pbdm:newbus')
 AddEventHandler('pbdm:newbus', function(bData)
     CurrentDriver = bData[1]
+    CurrentDriver[1] = NetworkGetEntityFromNetworkId(bData[1][2])
     CurrentPbus = bData[2]
+    CurrentDriver[1] = NetworkGetEntityFromNetworkId(bData[2][2])
     CurrentDepot = bData[3]
 end)
 --
@@ -335,7 +337,16 @@ Citizen.CreateThread(function()
                 if IsVehicleStuckOnRoof(CurrentPbus[1]) or IsEntityUpsidedown(CurrentPbus[1]) or IsEntityDead(CurrentDriver[1]) or IsEntityDead(CurrentPbus[1]) then
                     DeleteLastBusAndDriver(CurrentPbus[1], CurrentDriver[1])           
                 end
-                if CanDrive == true then                    
+                if IsPedInAnyVehicle(PlayerPedId(), true) then
+                    local veh = GetVehiclePedIsIn(PlayerPedId(), false)
+                    local buspass = NetworkGetEntityFromNetworkId(CurrentPbus[2]) 
+                    if veh == buspass then
+                        DisableControlAction(0, 75, true)  -- Disable exit vehicle
+                        DisableControlAction(27, 75, true) -- Disable exit vehicle
+                    end
+                end
+
+                if CanDrive == true then
                     SetVehicleHandbrake(CurrentPbus[1], false) -- hb off
                     SetVehicleDoorsLocked(CurrentPbus[1], 2) -- locked                   
                     local buscoords = GetEntityCoords(CurrentPbus[1])
@@ -411,29 +422,14 @@ Citizen.CreateThread(function()
                     -- ALL BUSES
                     if math.floor(distancetostop) < 5.0 then
                         CanDrive = false
-                        ShouldEnd = true
+                        SetVehicleDoorsLocked(CurrentPbus[1], 1)
+                        DeleteLastBusAndDriver()
                     end                    
-                else -- Candrive = false
-                    SetVehicleDoorsLocked(CurrentPbus[1], 1) -- unlocked
-                    TaskVehicleTempAction(CurrentDriver[1], CurrentPbus[1], 6, 2000)
-                    SetVehicleHandbrake(CurrentPbus[1], true)
-                    SetVehicleEngineOn(CurrentPbus[1], true, true, false)
-                end
-                if ShouldEnd == true then
-                    SetVehicleDoorsLocked(CurrentPbus[1], 1) -- unlocked 
-                    for i = 0, 1 do--- this can only be seen partially by the networked players.
-                        SetVehicleDoorOpen(CurrentPbus[1], i, false)
-                    end              
-                    DeleteLastBusAndDriver()
-                end
-            end            
-            if IsPedInAnyVehicle(PlayerPedId(), true) then
-                if AmInBus == true then
-                    local veh = GetVehiclePedIsIn(PlayerPedId(), false)
-                    if veh == buspass then
-                        DisableControlAction(0, 75, true)  -- Disable exit vehicle
-                        DisableControlAction(27, 75, true) -- Disable exit vehicle
-                    end
+                -- else -- Candrive = false
+                --     SetVehicleDoorsLocked(CurrentPbus[1], 1) -- unlocked
+                --     TaskVehicleTempAction(CurrentDriver[1], CurrentPbus[1], 6, 2000)
+                --     SetVehicleHandbrake(CurrentPbus[1], true)
+                --     SetVehicleEngineOn(CurrentPbus[1], true, true, false)
                 end
             end
         end
