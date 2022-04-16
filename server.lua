@@ -33,19 +33,18 @@ end)
 --
 RegisterServerEvent('pbdm:createdbusinfo')
 AddEventHandler('pbdm:createdbusinfo', function(bData)
-    -- print('busdoorstate:'..state..'')
     TriggerClientEvent('pbdm:newBus', -1, bData)
 end)
 --
 RegisterServerEvent('pbdm:busdooropen')
 AddEventHandler('pbdm:busdooropen', function(state)
-    print('busdoorstate:'..state..'')
-    TriggerClientEvent('pbdm:busdoorstate', -1, state)
+    print('busdooropen:'..state..'')
+    TriggerClientEvent('pbdm:busdooropen', -1, state)
 end)
 --
 RegisterServerEvent('pbdm:getoutofbusplz')
 AddEventHandler('pbdm:getoutofbusplz', function(bData)
-    print('oob:'..bData..'')
+    -- print('oob:'..bData..'')
     TriggerClientEvent('pbdm:oob', -1, bData)
 end)
 --

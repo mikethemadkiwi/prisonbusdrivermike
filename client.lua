@@ -273,12 +273,18 @@ AddEventHandler('pbdm:newbus', function(bData)
     CurrentDepot = bData[3]
 end)
 --
-RegisterNetEvent('pbdm:busdoorstate')
-AddEventHandler('pbdm:busdoorstate', function(state)
+RegisterNetEvent('pbdm:busdooropen')
+AddEventHandler('pbdm:busdooropen', function(state)
     local buspass = NetworkGetEntityFromNetworkId(state[1][2]) 
-    print('Doorstate ['..state[2]..']')   
-    for i = 0, 1 do
-        SetVehicleDoorShut(busspass, i, state[2])
+    print('busdooropen ['..state[2]..']')
+    if state[2] == true then
+        for i = 0, 1 do
+            SetVehicleDoorShut(busspass, i, true)
+        end
+    else
+        for i = 0, 1 do
+            SetVehicleDoorShut(busspass, i, false)
+        end
     end
 end)
 --
