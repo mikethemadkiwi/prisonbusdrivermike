@@ -78,7 +78,7 @@ function spawnBusDriver(Depot, cb)
         while not HasModelLoaded(GetHashKey('u_m_m_promourn_01')) do
             Wait(1)
         end
-        activeDriver = CreatePed(5, 'u_m_m_promourn_01', Depot.zones.menu.x+1.0, Depot.zones.menu.y, Depot.zones.menu.z, 0.0, true, false)        
+        activeDriver = CreatePed(5, 'u_m_m_promourn_01', 0, 0, 0, 0.0, true, false)        
         activeDriverNetId = NetworkGetNetworkIdFromEntity(activeDriver)
 		SetEntityInvincible(activeDriver, true)        
         SetDriverAbility(activeDriver, 1.0)
