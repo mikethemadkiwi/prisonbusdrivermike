@@ -274,7 +274,7 @@ AddEventHandler('pbdm:newbus', function(bData)
 end)
 --
 RegisterNetEvent('pbdm:busdoorstate')
-AddEventHandler('pbdm:busdoorstate', function(state)    
+AddEventHandler('pbdm:busdoorstate', function(state)
     local buspass = NetworkGetEntityFromNetworkId(state[1][2])    
     for i = 0, 1 do
         SetVehicleDoorShut(busspass, i, state[2])
