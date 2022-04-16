@@ -80,7 +80,6 @@ function spawnBusDriver(Depot, cb)
         end
         activeDriver = CreatePed(5, 'u_m_m_promourn_01', 0, 0, 0, 0.0, true, false)        
         activeDriverNetId = NetworkGetNetworkIdFromEntity(activeDriver)
-		SetEntityInvincible(activeDriver, true)        
         SetDriverAbility(activeDriver, 1.0)
         SetDriverAggressiveness(activeDriver, 0.0)
         SetPedCanBeDraggedOut(activeDriver, false)
@@ -113,7 +112,6 @@ function spawnBusAtDepot(busmodel, x, y, z, heading, driverPed, route, cb)
 		SetEntityAsMissionEntity(activeBus, true, false)
 		SetVehicleHasBeenOwnedByPlayer(activeBus, false)
         SetDisableVehicleWindowCollisions(activeBus, false)
-        SetEntityInvincible(activeBus, true)
 		SetVehicleNeedsToBeHotwired(activeBus, false)
 		SetModelAsNoLongerNeeded(model)
 		RequestCollisionAtCoord(x, y, z)
@@ -137,9 +135,10 @@ function DeleteLastBusAndDriver()
     AmInBus = false
     if CurrentPbus ~= nil then
         if DoesEntityExist(CurrentPbus[1]) then
-            if IsPedInVehicle(PlayerPedId(), CurrentPbus[1], false) then
-                TaskLeaveVehicle(PlayerPedId(), CurrentPbus[1], 0)
-            end
+            -- if IsPedInVehicle(PlayerPedId(), CurrentPbus[1], false) then
+                -- TaskLeaveVehicle(PlayerPedId(), CurrentPbus[1], 0)
+            TriggerServerEvent('pbdm:getoutofbusplz', {CurrentPbus})            
+            -- end
             Citizen.Wait(PBDMConf.WaitAfterDropoff)
             NetworkFadeOutEntity(CurrentPbus[1],true, false)
             while NetworkIsEntityFading(CurrentPbus[1]) do      
@@ -185,7 +184,7 @@ AddEventHandler('pbdm:createbus', function(bObj)
             end
             TriggerServerEvent('pbdm:createdbusinfo', {CurrentDriver, CurrentPbus, bObj})
             SetPedIntoVehicle(CurrentDriver[1], CurrentPbus[1], -1)    
-            for i = 0, 1 do
+            for i = 0, 1 do --- this can only be seen partially by the networked players.
                 SetVehicleDoorOpen(CurrentPbus[1], i, false)
             end 
             TriggerServerEvent('pbdm:makepass', {CurrentPbus[1], CurrentPbus[2], bObj})  
@@ -287,6 +286,16 @@ Citizen.CreateThread(function()
 	end
 end)
 --
+RegisterNetEvent('pbdm:oob')
+AddEventHandler('pbdm:oob', function(bId) 
+    local playerPed = PlayerPedId()
+    local isinbus = GetVehiclePedIsIn(playerPed, false)
+    local buspass = NetworkGetEntityFromNetworkId(bId[2]) 
+    if isinbus == buspass then
+        TaskLeaveVehicle(playerPed, buspass, 512)
+    end
+end)
+--
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(60000)
@@ -310,7 +319,7 @@ Citizen.CreateThread(function()
 		if NetworkIsPlayerActive(PlayerId()) then
             if CurrentPbus ~= nil then
                 if IsVehicleStuckOnRoof(CurrentPbus[1]) or IsEntityUpsidedown(CurrentPbus[1]) or IsEntityDead(CurrentDriver[1]) or IsEntityDead(CurrentPbus[1]) then
-                    DeleteBusAndDriver(CurrentPbus[1], CurrentDriver[1])           
+                    DeleteLastBusAndDriver(CurrentPbus[1], CurrentDriver[1])           
                 end
                 if CanDrive == true then                    
                     SetVehicleHandbrake(CurrentPbus[1], false) -- hb off
@@ -398,7 +407,7 @@ Citizen.CreateThread(function()
                 end
                 if ShouldEnd == true then
                     SetVehicleDoorsLocked(CurrentPbus[1], 1) -- unlocked 
-                    for i = 0, 1 do
+                    for i = 0, 1 do--- this can only be seen partially by the networked players.
                         SetVehicleDoorOpen(CurrentPbus[1], i, false)
                     end              
                     DeleteLastBusAndDriver()

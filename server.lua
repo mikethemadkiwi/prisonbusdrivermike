@@ -31,6 +31,11 @@ AddEventHandler('pbdm:requestbus', function(bData)
     table.insert(ActivePrisonBuses, bData)
 end)
 --
+RegisterServerEvent('pbdm:getoutofbusplz')
+AddEventHandler('pbdm:getoutofbusplz', function(bData)
+    TriggerClientEvent('pbdm:oob', -1, bData)
+end)
+--
 RegisterServerEvent('pbdm:makepass')
 AddEventHandler('pbdm:makepass', function(bId)
     TriggerClientEvent('pbdm:makeclientpass', -1, bId)
