@@ -176,7 +176,7 @@ AddEventHandler('pbdm:createbus', function(bObj)
         CurrentDriver = driverData
 		local bVehicle = spawnBusAtDepot(PBDMConf.busModel, bObj[2].zones.departure.x, bObj[2].zones.departure.y, bObj[2].zones.departure.z, bObj[2].zones.departure.h, driverData[1], 1, function(busData)
             CurrentPbus = busData
-            TriggerServerEvent('pbdm:createdbusinfo', {CurrentDriver, CurrentPbus, CurrentDepot})
+            TriggerServerEvent('pbdm:createdbusinfo', {CurrentDriver[2], CurrentPbus[2], CurrentDepot})
             if ClientDebug == true then
                 print('Bus:'..CurrentPbus[1]..' Driver:'..CurrentDriver[1])
             end
@@ -267,17 +267,15 @@ end)
 RegisterNetEvent('pbdm:newbus')
 AddEventHandler('pbdm:newbus', function(bData)
     if CurrentDriver == nil then
-        CurrentDriver = bData[1]
-        CurrentDriver[1] = NetworkGetEntityFromNetworkId(CurrentDriver[2])
+        CurrentDriver = NetworkGetEntityFromNetworkId(bData[1])
         if ClientDebug == true then
-            print('Storing New Driver [ '..CurrentDriver[1]..' ]')
+            print('Storing New Driver [ '..CurrentDriver..' ]')
         end
     end    
     if CurrentPbus == nil then
-        CurrentPbus = bData[2]
-        CurrentPbus[1] = NetworkGetEntityFromNetworkId(CurrentPbus[2])
+        CurrentPbus = NetworkGetEntityFromNetworkId(bData[2])
         if ClientDebug == true then
-            print('Storing New Bus [ '..CurrentPbus[1]..' ]')
+            print('Storing New Bus [ '..CurrentPbus..' ]')
         end
     end
     if CurrentDepot == nil then
@@ -350,16 +348,17 @@ Citizen.CreateThread(function()
 		Citizen.Wait(0)
 		if NetworkIsPlayerActive(PlayerId()) then
             if CurrentPbus ~= nil then                
-                local bId = NetworkGetEntityFromNetworkId(CurrentPbus[2])
-                if IsVehicleStuckOnRoof(bId) or IsEntityUpsidedown(bId) or IsEntityDead(CurrentDriver[1]) or IsEntityDead(bId) then
-                    DeleteLastBusAndDriver(bId, CurrentDriver[1])           
+                local bId = NetworkGetEntityFromNetworkId(CurrentPbus)
+                if IsVehicleStuckOnRoof(bId) or IsEntityUpsidedown(bId) or IsEntityDead(bId) then
+                    DeleteLastBusAndDriver(bId, CurrentDriver)
                 end
-                if IsPedInAnyVehicle(PlayerPedId(), true) then
-                    local veh = GetVehiclePedIsIn(PlayerPedId(), false)
-                    if veh == bId then
-                        DisableControlAction(0, 75, true)  -- Disable exit vehicle
-                        DisableControlAction(27, 75, true) -- Disable exit vehicle
-                    end
+                if IsEntityDead(CurrentDriver) then
+                    -- do something aboiut the timer mebbeh?                        
+                    DeleteLastBusAndDriver(bId, CurrentDriver)
+                end
+                if AmInBus == true then
+                    DisableControlAction(0, 75, true)  -- Disable exit vehicle
+                    DisableControlAction(27, 75, true) -- Disable exit vehicle
                 end
                 --
                 local buscoords = GetEntityCoords(bId)
@@ -440,12 +439,7 @@ Citizen.CreateThread(function()
                             SetPedKeepTask(CurrentDriver[1], true)
                         end               
 
-                    end                    
-                -- else -- Candrive = false
-                --     SetVehicleDoorsLocked(CurrentPbus[1], 1) -- unlocked
-                --     TaskVehicleTempAction(CurrentDriver[1], CurrentPbus[1], 6, 2000)
-                --     SetVehicleHandbrake(CurrentPbus[1], true)
-                --     SetVehicleEngineOn(CurrentPbus[1], true, true, false)
+                    end
                 end  
                 -- ALL BUSES
                 if math.floor(distancetostop) < 5.0 then

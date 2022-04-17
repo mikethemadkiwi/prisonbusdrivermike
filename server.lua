@@ -33,6 +33,7 @@ end)
 --
 RegisterServerEvent('pbdm:createdbusinfo')
 AddEventHandler('pbdm:createdbusinfo', function(bData)
+    print('sending bus netId [ '..bData[2]..' ] to netizens')
     TriggerClientEvent('pbdm:newbus', -1, bData)
 end)
 --
