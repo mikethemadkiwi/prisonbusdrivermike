@@ -279,7 +279,7 @@ end)
 --
 RegisterNetEvent('pbdm:busdooropen')
 AddEventHandler('pbdm:busdooropen', function(state)
-    local buspass = NetworkGetEntityFromNetworkId(CurrentPbus[2]) 
+    local buspass = NetworkGetEntityFromNetworkId(state[1][2]) 
     if state[2] == true then
         for i = 0, 1 do
             SetVehicleDoorOpen(busspass, i, false, false)
@@ -344,8 +344,7 @@ Citizen.CreateThread(function()
                 end
                 if IsPedInAnyVehicle(PlayerPedId(), true) then
                     local veh = GetVehiclePedIsIn(PlayerPedId(), false)
-                    local buspass = NetworkGetEntityFromNetworkId(CurrentPbus[2]) --- ?? this is possibly the problem in the doorcheck for networked players
-                    if veh == buspass then
+                    if veh == CurrentPbus[1] then
                         DisableControlAction(0, 75, true)  -- Disable exit vehicle
                         DisableControlAction(27, 75, true) -- Disable exit vehicle
                     end
