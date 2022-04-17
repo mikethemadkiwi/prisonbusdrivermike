@@ -364,6 +364,11 @@ Citizen.CreateThread(function()
                     
                     if CurrentDepot[2].uid == 'prisonbus_1' then
                         if math.floor(distancefromstart) == 45 then
+                            sLimit = PBDMConf.slowSpeed
+                            TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
+                            SetPedKeepTask(CurrentDriver[1], true)
+                        end
+                        if math.floor(distancefromstart) == 120 then
                             sLimit = PBDMConf.citySpeed
                             TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
                             SetPedKeepTask(CurrentDriver[1], true)
@@ -413,11 +418,11 @@ Citizen.CreateThread(function()
                             end
                         end
                         if math.floor(distancetostop) == 150 then
-                            sLimit = PBDMConf.citySpeed
+                            sLimit = PBDMConf.slowSpeed
                             TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
                             SetPedKeepTask(CurrentDriver[1], true)
                         end      
-                        if math.floor(distancetostop) == 75 then
+                        if math.floor(distancetostop) == 65 then
                             sLimit = PBDMConf.creepSpeed
                             TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
                             SetPedKeepTask(CurrentDriver[1], true)
