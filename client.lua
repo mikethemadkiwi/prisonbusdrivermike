@@ -266,14 +266,22 @@ end)
 --
 RegisterNetEvent('pbdm:newbus')
 AddEventHandler('pbdm:newbus', function(bData)
-    CurrentDriver = bData[1]
-    CurrentDriver[1] = NetworkGetEntityFromNetworkId(CurrentDriver[2])
-    CurrentPbus = bData[2]
-    CurrentPbus[1] = NetworkGetEntityFromNetworkId(CurrentPbus[2])
-    CurrentDepot = bData[3]
-    if ClientDebug == true then
-        print('newbusdriver '..CurrentDriver[1]..'')
-        print('newbus '..CurrentPbus[1]..'')
+    if CurrentDriver == nil then
+        CurrentDriver = bData[1]
+        CurrentDriver[1] = NetworkGetEntityFromNetworkId(CurrentDriver[2])
+        if ClientDebug == true then
+            print('newbusdriver '..CurrentDriver[1]..'')
+        end
+    end    
+    if CurrentPbus == nil then
+        CurrentPbus = bData[2]
+        CurrentPbus[1] = NetworkGetEntityFromNetworkId(CurrentPbus[2])
+        if ClientDebug == true then
+            print('newbus '..CurrentPbus[1]..'')
+        end
+    end
+    if CurrentDepot == nil then
+        CurrentDepot = bData[3]
     end
 end)
 --
