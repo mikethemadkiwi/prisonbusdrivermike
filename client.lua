@@ -176,10 +176,10 @@ AddEventHandler('pbdm:createbus', function(bObj)
         CurrentDriver = driverData
 		local bVehicle = spawnBusAtDepot(PBDMConf.busModel, bObj[2].zones.departure.x, bObj[2].zones.departure.y, bObj[2].zones.departure.z, bObj[2].zones.departure.h, driverData[1], 1, function(busData)
             CurrentPbus = busData
+            TriggerServerEvent('pbdm:createdbusinfo', {CurrentDriver, CurrentPbus, CurrentDepot})
             if ClientDebug == true then
                 print('Bus:'..CurrentPbus[1]..' Driver:'..CurrentDriver[1])
             end
-            TriggerServerEvent('pbdm:createdbusinfo', {CurrentDriver, CurrentPbus, CurrentDepot})
             SetPedIntoVehicle(CurrentDriver[1], CurrentPbus[1], -1)
             TriggerServerEvent('pbdm:busdooropen', {CurrentPbus, true})
             TriggerServerEvent('pbdm:makepass', {CurrentPbus[1], CurrentPbus[2], bObj})  
@@ -349,19 +349,20 @@ Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(0)
 		if NetworkIsPlayerActive(PlayerId()) then
-            if CurrentPbus ~= nil then
-                if IsVehicleStuckOnRoof(CurrentPbus[1]) or IsEntityUpsidedown(CurrentPbus[1]) or IsEntityDead(CurrentDriver[1]) or IsEntityDead(CurrentPbus[1]) then
-                    DeleteLastBusAndDriver(CurrentPbus[1], CurrentDriver[1])           
+            if CurrentPbus ~= nil then                
+                local bId = NetworkGetEntityFromNetworkId(CurrentPbus[2])
+                if IsVehicleStuckOnRoof(bId) or IsEntityUpsidedown(bId) or IsEntityDead(CurrentDriver[1]) or IsEntityDead(bId) then
+                    DeleteLastBusAndDriver(bId, CurrentDriver[1])           
                 end
                 if IsPedInAnyVehicle(PlayerPedId(), true) then
                     local veh = GetVehiclePedIsIn(PlayerPedId(), false)
-                    if veh == CurrentPbus[1] then
+                    if veh == bId then
                         DisableControlAction(0, 75, true)  -- Disable exit vehicle
                         DisableControlAction(27, 75, true) -- Disable exit vehicle
                     end
                 end
                 --
-                local buscoords = GetEntityCoords(CurrentPbus[1])
+                local buscoords = GetEntityCoords(bId)
                 local distancefromstart = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.departure.x, CurrentDepot[2].zones.departure.y, CurrentDepot[2].zones.departure.z, false)
                 local distancetostop = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, false)     
 
@@ -449,7 +450,7 @@ Citizen.CreateThread(function()
                 -- ALL BUSES
                 if math.floor(distancetostop) < 5.0 then
                     CanDrive = false
-                    SetVehicleDoorsLocked(CurrentPbus[1], 1)
+                    SetVehicleDoorsLocked(bId, 1)
                     DeleteLastBusAndDriver()
                 end
             end
