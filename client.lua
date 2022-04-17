@@ -269,11 +269,11 @@ AddEventHandler('pbdm:newbus', function(bData)
     CurrentDriver = bData[1]
     CurrentDriver[1] = NetworkGetEntityFromNetworkId(CurrentDriver[2])
     CurrentPbus = bData[2]
-    CurrentDriver[1] = NetworkGetEntityFromNetworkId(CurrentPbus[2])
+    CurrentPbus[1] = NetworkGetEntityFromNetworkId(CurrentPbus[2])
     CurrentDepot = bData[3]
     if ClientDebug == true then
-        print('newbusdriver'..CurrentDriver[1]..'')
-        print('newbus'..CurrentPbus[1]..'')
+        print('newbusdriver '..CurrentDriver[1]..'')
+        print('newbus '..CurrentPbus[1]..'')
     end
 end)
 --
