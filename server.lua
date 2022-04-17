@@ -33,7 +33,7 @@ end)
 --
 RegisterServerEvent('pbdm:createdbusinfo')
 AddEventHandler('pbdm:createdbusinfo', function(bData)
-    TriggerClientEvent('pbdm:newBus', -1, bData)
+    TriggerClientEvent('pbdm:newbus', -1, bData)
 end)
 --
 RegisterServerEvent('pbdm:busdooropen')
