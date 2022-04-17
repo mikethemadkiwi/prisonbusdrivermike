@@ -278,7 +278,7 @@ AddEventHandler('pbdm:busdooropen', function(state)
     local buspass = NetworkGetEntityFromNetworkId(CurrentPbus[2]) 
     if state[2] == true then
         for i = 0, 1 do
-            SetVehicleDoorOpen(busspass, i, false, true)
+            SetVehicleDoorOpen(busspass, i, false, false)
         end
     else
         for i = 0, 1 do

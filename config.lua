@@ -1,7 +1,6 @@
 --
-ClientDebug = false
-----
-ServerDebug = false
+ClientDebug = true
+ServerDebug = true
 --
 PBDMConf = {
 	busModel = 'pbus', -- bus model used
