@@ -176,16 +176,18 @@ AddEventHandler('pbdm:createbus', function(bObj)
         CurrentDriver = driverData
 		local bVehicle = spawnBusAtDepot(PBDMConf.busModel, bObj[2].zones.departure.x, bObj[2].zones.departure.y, bObj[2].zones.departure.z, bObj[2].zones.departure.h, driverData[1], 1, function(busData)
             CurrentPbus = busData
+
             TriggerServerEvent('pbdm:createdbusinfo', {CurrentDriver[2], CurrentPbus[2], CurrentDepot})
+
             if ClientDebug == true then
                 print('Bus:'..CurrentPbus[1]..' Driver:'..CurrentDriver[1])
             end
             SetPedIntoVehicle(CurrentDriver[1], CurrentPbus[1], -1)
-            TriggerServerEvent('pbdm:busdooropen', {CurrentPbus, true})
+            -- TriggerServerEvent('pbdm:busdooropen', {CurrentPbus, true})
             TriggerServerEvent('pbdm:makepass', {CurrentPbus[1], CurrentPbus[2], bObj})  
             Citizen.Wait(PBDMConf.passengerWaitTime)
             TriggerServerEvent('pbdm:delpass', {CurrentPbus[1], CurrentPbus[2], bObj})
-            TriggerServerEvent('pbdm:busdooropen', {CurrentPbus, false})
+            -- TriggerServerEvent('pbdm:busdooropen', {CurrentPbus, false})
             -- 
             CanDrive = true 
             sLimit = PBDMConf.creepSpeed
@@ -242,6 +244,10 @@ end)
 --
 RegisterNetEvent('pbdm:makeclientpass')
 AddEventHandler('pbdm:makeclientpass', function(bId)
+    buspass = NetworkGetEntityFromNetworkId(bId[2])    
+    for i = 0, 1 do
+        SetVehicleDoorOpen(busspass, i, false, false)
+    end
     local pCoords = vector3(bId[3][2].zones.passenger.x, bId[3][2].zones.passenger.y, bId[3][2].zones.passenger.z)
     PassengerZones[bId[2]] = CircleZone:Create(pCoords, 1.0, {
         name="passengerZonePrisoner",
@@ -250,8 +256,7 @@ AddEventHandler('pbdm:makeclientpass', function(bId)
     })
     PassengerZones[bId[2]]:onPlayerInOut(function(isPointInside, point, zone)
         if isPointInside then
-            buspass = NetworkGetEntityFromNetworkId(bId[2])
-            putplayerinseat(buspass) 
+            putplayerinseat(buspass)
             if ClientDebug == true then
                 print('Entered Bus LOCAL: '..buspass..' NET: '..bId[2]..' ')
             end
@@ -261,44 +266,50 @@ end)
 --
 RegisterNetEvent('pbdm:delclientpass')
 AddEventHandler('pbdm:delclientpass', function(bId)
+    buspass = NetworkGetEntityFromNetworkId(bId[2])    
+    for i = 0, 1 do
+        SetVehicleDoorShut(busspass, i, false)
+    end
     PassengerZones[bId[2]]:destroy()
 end)
 --
 RegisterNetEvent('pbdm:newbus')
 AddEventHandler('pbdm:newbus', function(bData)
     if CurrentDriver == nil then
-        CurrentDriver = NetworkGetEntityFromNetworkId(bData[1])
-        if ClientDebug == true then
-            print('Storing New Driver [ '..CurrentDriver..' ]')
-        end
+        CurrentDriver[1] = NetworkGetEntityFromNetworkId(bData[1]) -- set local ped id.
+        CurrentDriver[2] = bData[1] -- netid
+    end
+    if ClientDebug == true then
+        print('Storing Networked Driver [ '..CurrentDriver[1]..' ]')
     end    
     if CurrentPbus == nil then
-        CurrentPbus = NetworkGetEntityFromNetworkId(bData[2])
-        if ClientDebug == true then
-            print('Storing New Bus [ '..CurrentPbus..' ]')
-        end
+        CurrentPbus[1] = NetworkGetEntityFromNetworkId(bData[2])
+        CurrentPbus[2] = bData[2] -- netid
+    end
+    if ClientDebug == true then
+        print('Storing Networked Bus [ '..CurrentPbus[1]..' ]')
     end
     if CurrentDepot == nil then
         CurrentDepot = bData[3]
-        if ClientDebug == true then
-            print('Storing New Depot []')
-        end
+    end
+    if ClientDebug == true then
+        print('Storing Networked Depot []')
     end
 end)
 --
-RegisterNetEvent('pbdm:busdooropen')
-AddEventHandler('pbdm:busdooropen', function(state)
-    local buspass = NetworkGetEntityFromNetworkId(state[1][2]) 
-    if state[2] == true then
-        for i = 0, 1 do
-            SetVehicleDoorOpen(busspass, i, false, false)
-        end
-    else
-        for i = 0, 1 do
-            SetVehicleDoorShut(busspass, i, false)
-        end
-    end
-end)
+-- RegisterNetEvent('pbdm:busdooropen')
+-- AddEventHandler('pbdm:busdooropen', function(state)
+--     local buspass = NetworkGetEntityFromNetworkId(state[1][2]) 
+--     if state[2] == true then
+--         for i = 0, 1 do
+--             SetVehicleDoorOpen(busspass, i, false, false)
+--         end
+--     else
+--         for i = 0, 1 do
+--             SetVehicleDoorShut(busspass, i, false)
+--         end
+--     end
+-- end)
 --
 Citizen.CreateThread(function()
 	while true do
