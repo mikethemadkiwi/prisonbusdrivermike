@@ -359,13 +359,14 @@ Citizen.CreateThread(function()
 		Citizen.Wait(0)
 		if NetworkIsPlayerActive(PlayerId()) then
             if CurrentPbus ~= nil then                
-                local bId = NetworkGetEntityFromNetworkId(CurrentPbus[1])
+                local bId = NetworkGetEntityFromNetworkId(CurrentPbus[2])
+                local dId = NetworkGetEntityFromNetworkId(CurrentDriver[2])
                 if IsVehicleStuckOnRoof(bId) or IsEntityUpsidedown(bId) or IsEntityDead(bId) then
-                    DeleteLastBusAndDriver(bId, CurrentDriver[1])
+                    DeleteLastBusAndDriver(bId, dId)
                 end
-                if IsEntityDead(CurrentDriver[1]) then
+                if IsEntityDead(dId) then
                     -- do something aboiut the timer mebbeh?                        
-                    DeleteLastBusAndDriver(bId, CurrentDriver[1])
+                    DeleteLastBusAndDriver(bId, dId)
                 end
                 if AmInBus == true then
                     DisableControlAction(0, 75, true)  -- Disable exit vehicle
