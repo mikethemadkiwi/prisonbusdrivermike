@@ -274,33 +274,14 @@ AddEventHandler('pbdm:delclientpass', function(bId)
 end)
 --
 RegisterNetEvent('pbdm:newbus')
-AddEventHandler('pbdm:newbus', function(bData)
-    
-        for i = 1, #bData do
-           print( bData[i])
-        end
-
-
-    -- if CurrentDriver == nil then
-    
-    --     CurrentDriver[1] = NetworkGetEntityFromNetworkId(bData[1]) -- set local ped id.
-    --     CurrentDriver[2] = bData[1] -- netid
-    -- -- end
-    -- if ClientDebug == true then
-    --     print('Storing Networked Driver [ '..CurrentDriver[1]..' ]')
-    -- end    
-    -- if CurrentPbus == nil then
-        CurrentPbus[1] = NetworkGetEntityFromNetworkId(bData[2])
-        CurrentPbus[2] = bData[2] -- netid
-    -- end
+AddEventHandler('pbdm:newbus', function(bData)    
+        -- for i = 1, #bData do
+        --    print( bData[i])
+        -- end
+        CurrentPbus[1] = NetworkGetEntityFromNetworkId(bData)
+        CurrentPbus[2] = bData -- netid
     if ClientDebug == true then
-        print('Storing Networked Bus [ '..CurrentPbus[1]..' ]')
-    end
-    -- if CurrentDepot == nil then
-        CurrentDepot = bData[3]
-    -- end
-    if ClientDebug == true then
-        print('Storing Networked Depot []')
+        print('Storing Networked Bus [ '..CurrentPbus[1]..'/'..CurrentPbus[2]..' ]')
     end
 end)
 --
