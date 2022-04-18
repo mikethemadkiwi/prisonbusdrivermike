@@ -176,9 +176,7 @@ AddEventHandler('pbdm:createbus', function(bObj)
         CurrentDriver = driverData
 		local bVehicle = spawnBusAtDepot(PBDMConf.busModel, bObj[2].zones.departure.x, bObj[2].zones.departure.y, bObj[2].zones.departure.z, bObj[2].zones.departure.h, driverData[1], 1, function(busData)
             CurrentPbus = busData
-
             TriggerServerEvent('pbdm:createdbusinfo', {CurrentDriver[2], CurrentPbus[2], CurrentDepot})
-
             if ClientDebug == true then
                 print('Bus:'..CurrentPbus[1]..' Driver:'..CurrentDriver[1])
             end
@@ -189,6 +187,7 @@ AddEventHandler('pbdm:createbus', function(bObj)
             TriggerServerEvent('pbdm:delpass', {CurrentPbus[1], CurrentPbus[2], bObj})
             -- TriggerServerEvent('pbdm:busdooropen', {CurrentPbus, false})
             -- 
+            
             CanDrive = true 
             sLimit = PBDMConf.creepSpeed
             TaskVehicleDriveWander(CurrentDriver[1], CurrentPbus[1], sLimit, PBDMConf.drivingStyle)
