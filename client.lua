@@ -275,7 +275,14 @@ end)
 --
 RegisterNetEvent('pbdm:newbus')
 AddEventHandler('pbdm:newbus', function(bData)
+    
+        for i = 1, #bData do
+           print( bData[i])
+        end
+
+
     -- if CurrentDriver == nil then
+    
         CurrentDriver[1] = NetworkGetEntityFromNetworkId(bData[1]) -- set local ped id.
         CurrentDriver[2] = bData[1] -- netid
     -- end
