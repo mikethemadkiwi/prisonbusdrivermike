@@ -246,7 +246,7 @@ RegisterNetEvent('pbdm:makeclientpass')
 AddEventHandler('pbdm:makeclientpass', function(bId)
     buspass = NetworkGetEntityFromNetworkId(bId[2])    
     for i = 0, 1 do
-        SetVehicleDoorOpen(busspass, i, false, false)
+        SetVehicleDoorOpen(busspass, i, false, true)
     end
     local pCoords = vector3(bId[3][2].zones.passenger.x, bId[3][2].zones.passenger.y, bId[3][2].zones.passenger.z)
     PassengerZones[bId[2]] = CircleZone:Create(pCoords, 1.0, {
@@ -268,7 +268,7 @@ RegisterNetEvent('pbdm:delclientpass')
 AddEventHandler('pbdm:delclientpass', function(bId)
     buspass = NetworkGetEntityFromNetworkId(bId[2])    
     for i = 0, 1 do
-        SetVehicleDoorShut(busspass, i, false)
+        SetVehicleDoorShut(busspass, i, true)
     end
     PassengerZones[bId[2]]:destroy()
 end)
@@ -359,13 +359,13 @@ Citizen.CreateThread(function()
 		Citizen.Wait(0)
 		if NetworkIsPlayerActive(PlayerId()) then
             if CurrentPbus ~= nil then                
-                local bId = NetworkGetEntityFromNetworkId(CurrentPbus)
+                local bId = NetworkGetEntityFromNetworkId(CurrentPbus[1])
                 if IsVehicleStuckOnRoof(bId) or IsEntityUpsidedown(bId) or IsEntityDead(bId) then
-                    DeleteLastBusAndDriver(bId, CurrentDriver)
+                    DeleteLastBusAndDriver(bId, CurrentDriver[1])
                 end
-                if IsEntityDead(CurrentDriver) then
+                if IsEntityDead(CurrentDriver[1]) then
                     -- do something aboiut the timer mebbeh?                        
-                    DeleteLastBusAndDriver(bId, CurrentDriver)
+                    DeleteLastBusAndDriver(bId, CurrentDriver[1])
                 end
                 if AmInBus == true then
                     DisableControlAction(0, 75, true)  -- Disable exit vehicle
