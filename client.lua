@@ -281,7 +281,7 @@ AddEventHandler('pbdm:newbus', function(bData)
         CurrentDriver[2] = bData[1] -- netid
     end
     if ClientDebug == true then
-        print('Storing Networked Driver [ '..CurrentDriver[1]..' ]')
+        print('Storing Networked Driver [ '..CurrentDriver[1]..'/'..CurrentPCurrentDriverbus[2]..' ]')
     end    
     if CurrentPbus == nil then
         CurrentPbus = {}
@@ -289,10 +289,9 @@ AddEventHandler('pbdm:newbus', function(bData)
         CurrentPbus[2] = bData[2] -- netid
     end
     if ClientDebug == true then
-        print('Storing Networked Bus [ '..CurrentPbus[1]..' ]')
+        print('Storing Networked Bus [ '..CurrentPbus[1]..'/'..CurrentPbus[2]..' ]')
     end
     if CurrentDepot == nil then
-        CurrentDepot = {}
         CurrentDepot = bData[3]
     end
     if ClientDebug == true then
