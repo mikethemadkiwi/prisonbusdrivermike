@@ -186,8 +186,6 @@ AddEventHandler('pbdm:createbus', function(bObj)
             Citizen.Wait(PBDMConf.passengerWaitTime)
             TriggerServerEvent('pbdm:delpass', {CurrentPbus[1], CurrentPbus[2], bObj})
             -- TriggerServerEvent('pbdm:busdooropen', {CurrentPbus, false})
-            -- 
-            
             CanDrive = true 
             sLimit = PBDMConf.creepSpeed
             TaskVehicleDriveWander(CurrentDriver[1], CurrentPbus[1], sLimit, PBDMConf.drivingStyle)
