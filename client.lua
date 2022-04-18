@@ -275,19 +275,19 @@ end)
 --
 RegisterNetEvent('pbdm:newbus')
 AddEventHandler('pbdm:newbus', function(bData)
-    if CurrentDriver == nil then
+    -- if CurrentDriver == nil then
         CurrentDriver = {}
         CurrentDriver[1] = NetworkGetEntityFromNetworkId(bData[1]) -- set local ped id.
         CurrentDriver[2] = bData[1] -- netid
-    end
+    -- end
     if ClientDebug == true then
         print('Storing Networked Driver [ '..CurrentDriver[1]..'/'..CurrentDriver[2]..' ]')
     end    
-    if CurrentPbus == nil then
+    -- if CurrentPbus == nil then
         CurrentPbus = {}
         CurrentPbus[1] = NetworkGetEntityFromNetworkId(bData[2])
         CurrentPbus[2] = bData[2] -- netid
-    end
+    -- end
     if ClientDebug == true then
         print('Storing Networked Bus [ '..CurrentPbus[1]..'/'..CurrentPbus[2]..' ]')
     end
