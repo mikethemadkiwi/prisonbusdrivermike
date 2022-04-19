@@ -178,33 +178,21 @@ AddEventHandler('pbdm:createbus', function(bObj)
         CurrentDriver = driverData
 		local bVehicle = spawnBusAtDepot(PBDMConf.busModel, bObj[2].zones.departure.x, bObj[2].zones.departure.y, bObj[2].zones.departure.z, bObj[2].zones.departure.h, driverData[1], 1, function(busData)
             CurrentPbus = busData
-            SetPedIntoVehicle(CurrentDriver[1], CurrentPbus[1], -1)
+            SetPedIntoVehicle(CurrentDriver[1], CurrentPbus[1], -1)            
+            TriggerServerEvent('pbdm:createdbusinfo', {CurrentDriver[2], CurrentPbus[2], CurrentDepot})
+            if ClientDebug == true then
+                print('Bus:'..CurrentPbus[1]..' Driver:'..CurrentDriver[1])
+            end
+            TriggerServerEvent('pbdm:makepass', {CurrentPbus[1], CurrentPbus[2], bObj})
+            Citizen.Wait(PBDMConf.passengerWaitTime)
+            TriggerServerEvent('pbdm:delpass', {CurrentPbus[1], CurrentPbus[2], bObj})CanDrive = true 
+            sLimit = PBDMConf.creepSpeed
+            TaskVehicleDriveWander(CurrentDriver[1], CurrentPbus[1], sLimit, PBDMConf.drivingStyle)
+            SetDriveTaskDrivingStyle(CurrentDriver[1], PBDMConf.drivingStyle)
+            TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
+            SetPedKeepTask(CurrentDriver[1], true)
 		end)
    	end)
-    TriggerServerEvent('pbdm:createdbusinfo', {CurrentDriver[2], CurrentPbus[2], CurrentDepot})
-    if ClientDebug == true then
-        print('Bus:'..CurrentPbus[1]..' Driver:'..CurrentDriver[1])
-    end
-    TriggerServerEvent('pbdm:makepass', {CurrentPbus[1], CurrentPbus[2], bObj}) 
-
-    for i = 0, 1 do
-        SetVehicleDoorOpen(CurrentPbus[1], i, false, true)
-    end 
-
-    Citizen.Wait(PBDMConf.passengerWaitTime)
-     
-       
-    for i = 0, 1 do
-        SetVehicleDoorShut(CurrentPbus[1], i, true)
-    end
-
-    TriggerServerEvent('pbdm:delpass', {CurrentPbus[1], CurrentPbus[2], bObj})
-    CanDrive = true 
-    sLimit = PBDMConf.creepSpeed
-    TaskVehicleDriveWander(CurrentDriver[1], CurrentPbus[1], sLimit, PBDMConf.drivingStyle)
-    SetDriveTaskDrivingStyle(CurrentDriver[1], PBDMConf.drivingStyle)
-    TaskVehicleDriveToCoordLongrange(CurrentDriver[1], CurrentPbus[1], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, sLimit, PBDMConf.drivingStyle, PBDMConf.stopDistance)
-    SetPedKeepTask(CurrentDriver[1], true)
 end)
 --------------INIT--------------
 Citizen.CreateThread(function()
