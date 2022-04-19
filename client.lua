@@ -80,6 +80,7 @@ function spawnBusDriver(Depot, cb)
         end
         activeDriver = CreatePed(5, 'u_m_m_promourn_01', 0, 0, 0, 0.0, true, false)        
         activeDriverNetId = NetworkGetNetworkIdFromEntity(activeDriver)
+		SetNetworkIdCanMigrate(activeDriverNetId, true)
         SetDriverAbility(activeDriver, 1.0)
         SetDriverAggressiveness(activeDriver, 0.0)
         SetPedCanBeDraggedOut(activeDriver, false)
