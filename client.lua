@@ -260,9 +260,9 @@ AddEventHandler('pbdm:makeclientpass', function(bId)
     PassengerZones[bId[2]]:onPlayerInOut(function(isPointInside, point, zone)
         if isPointInside then
             --
-            CurrentPbus = {}
-            CurrentPbus[1] = buspass
-            CurrentPbus[2] = bId[2]
+            -- CurrentPbus = {}
+            -- CurrentPbus[1] = buspass
+            -- CurrentPbus[2] = bId[2]
             --
             putplayerinseat(buspass)
             if ClientDebug == true then
@@ -351,11 +351,15 @@ Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(0)
 		if NetworkIsPlayerActive(PlayerId()) then
-            if CurrentPbus ~= nil then  
+            if CurrentPbus ~= nil then
+                
+                SetVehicleDoorsLocked(CurrentPbus[1], 1) --  unlocked
+                SetVehicleHandbrake(CurrentPbus[1], false) -- hb off
+
                 if AmInBus == true then
                     DisableControlAction(0, 75, true)  -- Disable exit vehicle
                     DisableControlAction(27, 75, true) -- Disable exit vehicle
-                    SetVehicleDoorsLocked(CurrentPbus[1], 2) -- locked     
+                    -- SetVehicleDoorsLocked(CurrentPbus[1], 2) -- locked     
                 end 
 
                 ----------------------------------------------------------              
@@ -367,10 +371,7 @@ Citizen.CreateThread(function()
                 if IsEntityDead(CurrentDriver[1]) then
                     -- do something aboiut the timer mebbeh?                        
                     DeleteLastBusAndDriver(CurrentPbus[1], CurrentDriver[1])
-                end
-
-
-                
+                end               
 
                 --
                 local buscoords = GetEntityCoords(CurrentPbus[1])
@@ -392,7 +393,6 @@ Citizen.CreateThread(function()
 
                 if CanDrive == true then
 
-                    SetVehicleHandbrake(CurrentPbus[1], false) -- hb off
 
                     ------ PRISON BUS 1
                     
