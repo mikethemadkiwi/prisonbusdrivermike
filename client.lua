@@ -356,21 +356,16 @@ Citizen.CreateThread(function()
                 if AmInBus == true then
                     DisableControlAction(0, 75, true)  -- Disable exit vehicle
                     DisableControlAction(27, 75, true) -- Disable exit vehicle
-                    SetVehicleDoorsLocked(CurrentPbus[1], 2) -- locked     
+                    SetVehicleDoorsLocked(CurrentPbus[1], 2) -- locked
+                    if IsVehicleStuckOnRoof(CurrentPbus[1]) or IsEntityUpsidedown(CurrentPbus[1]) or IsEntityDead(CurrentPbus[1]) then
+                        DeleteLastBusAndDriver(CurrentPbus[1], CurrentDriver[1])
+                    end
+                    if IsEntityDead(CurrentDriver[1]) then
+                        -- do something aboiut the timer mebbeh?                        
+                        DeleteLastBusAndDriver(CurrentPbus[1], CurrentDriver[1])
+                    end
                 end 
-
-                ----------------------------------------------------------              
-
-                if IsVehicleStuckOnRoof(CurrentPbus[1]) or IsEntityUpsidedown(CurrentPbus[1]) or IsEntityDead(CurrentPbus[1]) then
-                    DeleteLastBusAndDriver(CurrentPbus[1], CurrentDriver[1])
-                end
-
-                if IsEntityDead(CurrentDriver[1]) then
-                    -- do something aboiut the timer mebbeh?                        
-                    DeleteLastBusAndDriver(CurrentPbus[1], CurrentDriver[1])
-                end               
-
-                --
+                ----------------------------------------------------------  
                 local buscoords = GetEntityCoords(CurrentPbus[1])
                 local distancefromstart = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.departure.x, CurrentDepot[2].zones.departure.y, CurrentDepot[2].zones.departure.z, false)
                 local distancetostop = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, false)     
