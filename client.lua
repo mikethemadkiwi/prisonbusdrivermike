@@ -361,10 +361,10 @@ Citizen.CreateThread(function()
 
                 ----------------------------------------------------------              
 
-
                 if IsVehicleStuckOnRoof(CurrentPbus[1]) or IsEntityUpsidedown(CurrentPbus[1]) or IsEntityDead(CurrentPbus[1]) then
                     DeleteLastBusAndDriver(CurrentPbus[1], CurrentDriver[1])
                 end
+
                 if IsEntityDead(CurrentDriver[1]) then
                     -- do something aboiut the timer mebbeh?                        
                     DeleteLastBusAndDriver(CurrentPbus[1], CurrentDriver[1])
