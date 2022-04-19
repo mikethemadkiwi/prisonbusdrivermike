@@ -299,20 +299,6 @@ AddEventHandler('pbdm:newbus', function(bData)
     end
 end)
 --
--- RegisterNetEvent('pbdm:busdooropen')
--- AddEventHandler('pbdm:busdooropen', function(state)
---     local buspass = NetworkGetEntityFromNetworkId(state[1][2]) 
---     if state[2] == true then
---         for i = 0, 1 do
---             SetVehicleDoorOpen(busspass, i, false, false)
---         end
---     else
---         for i = 0, 1 do
---             SetVehicleDoorShut(busspass, i, false)
---         end
---     end
--- end)
---
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(0)
@@ -360,9 +346,18 @@ Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(0)
 		if NetworkIsPlayerActive(PlayerId()) then
-            if CurrentPbus ~= nil then
+            if CurrentPbus ~= nil then   
+                for i = 0, 1 do
+                    SetVehicleDoorOpen(CurrentPbus[1], i, false, true)
+                end
+                if AmInBus == true then
+                    DisableControlAction(0, 75, true)  -- Disable exit vehicle
+                    DisableControlAction(27, 75, true) -- Disable exit vehicle
+                end 
 
                 ----------------------------------------------------------
+                
+
                 local bId = NetworkGetEntityFromNetworkId(CurrentPbus[2])
                 local dId = NetworkGetEntityFromNetworkId(CurrentDriver[2])
 
@@ -375,10 +370,7 @@ Citizen.CreateThread(function()
                 end
 
 
-                if AmInBus == true then
-                    DisableControlAction(0, 75, true)  -- Disable exit vehicle
-                    DisableControlAction(27, 75, true) -- Disable exit vehicle
-                end 
+                
 
                 --
                 local buscoords = GetEntityCoords(bId)
@@ -388,7 +380,7 @@ Citizen.CreateThread(function()
                 -- ALL BUSES
                 if math.floor(distancetostop) < 5.0 then
                     CanDrive = false
-                    SetVehicleDoorsLocked(bId, 1)
+                    SetVehicleDoorsLocked(bId, 1) --  unlocked
                     DeleteLastBusAndDriver()
                 end
                 ----------------------------------------------------------
