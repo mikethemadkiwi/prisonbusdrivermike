@@ -181,11 +181,9 @@ AddEventHandler('pbdm:createbus', function(bObj)
                 print('Bus:'..CurrentPbus[1]..' Driver:'..CurrentDriver[1])
             end
             SetPedIntoVehicle(CurrentDriver[1], CurrentPbus[1], -1)
-            -- TriggerServerEvent('pbdm:busdooropen', {CurrentPbus, true})
             TriggerServerEvent('pbdm:makepass', {CurrentPbus[1], CurrentPbus[2], bObj})  
             Citizen.Wait(PBDMConf.passengerWaitTime)
             TriggerServerEvent('pbdm:delpass', {CurrentPbus[1], CurrentPbus[2], bObj})
-            -- TriggerServerEvent('pbdm:busdooropen', {CurrentPbus, false})
             CanDrive = true 
             sLimit = PBDMConf.creepSpeed
             TaskVehicleDriveWander(CurrentDriver[1], CurrentPbus[1], sLimit, PBDMConf.drivingStyle)
@@ -253,6 +251,11 @@ AddEventHandler('pbdm:makeclientpass', function(bId)
     })
     PassengerZones[bId[2]]:onPlayerInOut(function(isPointInside, point, zone)
         if isPointInside then
+            --
+            CurrentPbus = {}
+            CurrentPbus[1] = buspass
+            CurrentPbus[2] = bId[2]
+            --
             putplayerinseat(buspass)
             if ClientDebug == true then
                 print('Entered Bus LOCAL: '..buspass..' NET: '..bId[2]..' ')
@@ -338,7 +341,7 @@ end)
 --
 Citizen.CreateThread(function()
 	while true do
-		Citizen.Wait(60000)
+		Citizen.Wait(PBDMConf.AIUpdateTimer)
 		if NetworkIsPlayerActive(PlayerId()) then
             if CurrentPbus ~= nil then                
                 if CanDrive == true then
@@ -360,13 +363,6 @@ Citizen.CreateThread(function()
             if CurrentPbus ~= nil then                
                 local bId = NetworkGetEntityFromNetworkId(CurrentPbus[2])
                 local dId = NetworkGetEntityFromNetworkId(CurrentDriver[2])
-                if IsVehicleStuckOnRoof(bId) or IsEntityUpsidedown(bId) or IsEntityDead(bId) then
-                    DeleteLastBusAndDriver(bId, dId)
-                end
-                if IsEntityDead(dId) then
-                    -- do something aboiut the timer mebbeh?                        
-                    DeleteLastBusAndDriver(bId, dId)
-                end
                 if AmInBus == true then
                     DisableControlAction(0, 75, true)  -- Disable exit vehicle
                     DisableControlAction(27, 75, true) -- Disable exit vehicle
@@ -377,6 +373,20 @@ Citizen.CreateThread(function()
                 local distancetostop = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, false)     
 
                 if CanDrive == true then
+
+                    ----------------------------------------------------------
+                        if IsVehicleStuckOnRoof(bId) or IsEntityUpsidedown(bId) or IsEntityDead(bId) then
+                            DeleteLastBusAndDriver(bId, dId)
+                        end
+                        if IsEntityDead(dId) then
+                            -- do something aboiut the timer mebbeh?                        
+                            DeleteLastBusAndDriver(bId, dId)
+                        end
+
+
+
+                    ----------------------------------------------------------
+
                     SetVehicleHandbrake(CurrentPbus[1], false) -- hb off
                     SetVehicleDoorsLocked(CurrentPbus[1], 2) -- locked                   
                     if ClientDebug == true then 
