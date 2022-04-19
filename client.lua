@@ -178,13 +178,13 @@ AddEventHandler('pbdm:createbus', function(bObj)
         CurrentDriver = driverData
 		local bVehicle = spawnBusAtDepot(PBDMConf.busModel, bObj[2].zones.departure.x, bObj[2].zones.departure.y, bObj[2].zones.departure.z, bObj[2].zones.departure.h, driverData[1], 1, function(busData)
             CurrentPbus = busData
+            SetPedIntoVehicle(CurrentDriver[1], CurrentPbus[1], -1)
 		end)
    	end)
     TriggerServerEvent('pbdm:createdbusinfo', {CurrentDriver[2], CurrentPbus[2], CurrentDepot})
     if ClientDebug == true then
         print('Bus:'..CurrentPbus[1]..' Driver:'..CurrentDriver[1])
     end
-    SetPedIntoVehicle(CurrentDriver[1], CurrentPbus[1], -1)
     TriggerServerEvent('pbdm:makepass', {CurrentPbus[1], CurrentPbus[2], bObj}) 
 
     for i = 0, 1 do
