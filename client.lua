@@ -181,8 +181,19 @@ AddEventHandler('pbdm:createbus', function(bObj)
                 print('Bus:'..CurrentPbus[1]..' Driver:'..CurrentDriver[1])
             end
             SetPedIntoVehicle(CurrentDriver[1], CurrentPbus[1], -1)
-            TriggerServerEvent('pbdm:makepass', {CurrentPbus[1], CurrentPbus[2], bObj})  
+            TriggerServerEvent('pbdm:makepass', {CurrentPbus[1], CurrentPbus[2], bObj}) 
+
+            for i = 0, 1 do
+                SetVehicleDoorOpen(CurrentPbus[1], i, false, true)
+            end 
+
             Citizen.Wait(PBDMConf.passengerWaitTime)
+             
+               
+            for i = 0, 1 do
+                SetVehicleDoorShut(CurrentPbus[1], i, true)
+            end
+
             TriggerServerEvent('pbdm:delpass', {CurrentPbus[1], CurrentPbus[2], bObj})
             CanDrive = true 
             sLimit = PBDMConf.creepSpeed
@@ -239,10 +250,7 @@ end)
 --
 RegisterNetEvent('pbdm:makeclientpass')
 AddEventHandler('pbdm:makeclientpass', function(bId)
-    buspass = NetworkGetEntityFromNetworkId(bId[2])    
-    for i = 0, 1 do
-        SetVehicleDoorOpen(busspass, i, false, true)
-    end
+    buspass = NetworkGetEntityFromNetworkId(bId[2]) 
     local pCoords = vector3(bId[3][2].zones.passenger.x, bId[3][2].zones.passenger.y, bId[3][2].zones.passenger.z)
     PassengerZones[bId[2]] = CircleZone:Create(pCoords, 1.0, {
         name="passengerZonePrisoner",
@@ -261,15 +269,12 @@ AddEventHandler('pbdm:makeclientpass', function(bId)
                 print('Entered Bus LOCAL: '..buspass..' NET: '..bId[2]..' ')
             end
         end
-    end)	
+    end)
 end)
 --
 RegisterNetEvent('pbdm:delclientpass')
 AddEventHandler('pbdm:delclientpass', function(bId)
-    buspass = NetworkGetEntityFromNetworkId(bId[2])    
-    for i = 0, 1 do
-        SetVehicleDoorShut(busspass, i, true)
-    end
+    buspass = NetworkGetEntityFromNetworkId(bId[2]) 
     PassengerZones[bId[2]]:destroy()
 end)
 --
@@ -346,41 +351,40 @@ Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(0)
 		if NetworkIsPlayerActive(PlayerId()) then
-            if CurrentPbus ~= nil then   
-                for i = 0, 1 do
-                    SetVehicleDoorOpen(CurrentPbus[1], i, false, true)
-                end
+            if CurrentPbus ~= nil then  
                 if AmInBus == true then
                     DisableControlAction(0, 75, true)  -- Disable exit vehicle
                     DisableControlAction(27, 75, true) -- Disable exit vehicle
+                    SetVehicleDoorsLocked(CurrentPbus[1], 2) -- locked     
                 end 
 
-                ----------------------------------------------------------
-                
+                ----------------------------------------------------------              
 
-                local bId = NetworkGetEntityFromNetworkId(CurrentPbus[2])
-                local dId = NetworkGetEntityFromNetworkId(CurrentDriver[2])
 
-                if IsVehicleStuckOnRoof(bId) or IsEntityUpsidedown(bId) or IsEntityDead(bId) then
-                    DeleteLastBusAndDriver(bId, dId)
+                if IsVehicleStuckOnRoof(CurrentPbus[1]) or IsEntityUpsidedown(CurrentPbus[1]) or IsEntityDead(CurrentPbus[1]) then
+                    DeleteLastBusAndDriver(CurrentPbus[1], CurrentDriver[1])
                 end
-                if IsEntityDead(dId) then
+                if IsEntityDead(CurrentDriver[1]) then
                     -- do something aboiut the timer mebbeh?                        
-                    DeleteLastBusAndDriver(bId, dId)
+                    DeleteLastBusAndDriver(CurrentPbus[1], CurrentDriver[1])
                 end
 
 
                 
 
                 --
-                local buscoords = GetEntityCoords(bId)
+                local buscoords = GetEntityCoords(CurrentPbus[1])
                 local distancefromstart = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.departure.x, CurrentDepot[2].zones.departure.y, CurrentDepot[2].zones.departure.z, false)
                 local distancetostop = GetDistanceBetweenCoords(buscoords[1], buscoords[2], buscoords[3], CurrentDepot[2].zones.recieving.x, CurrentDepot[2].zones.recieving.y, CurrentDepot[2].zones.recieving.z, false)     
+                                  
+                if ClientDebug == true then 
+                    drawOnScreen2D('Depot: '..CurrentDepot[2].uid..'\nDFS:[ '..distancefromstart..' ]\nDTS:[ '..distancetostop..' ]\n@ '..sLimit..' Speed ', 255, 255, 255, 255, 0.45, 0.45, 0.6)
+                end
 
                 -- ALL BUSES
                 if math.floor(distancetostop) < 5.0 then
                     CanDrive = false
-                    SetVehicleDoorsLocked(bId, 1) --  unlocked
+                    SetVehicleDoorsLocked(CurrentPbus[1], 1) --  unlocked
                     DeleteLastBusAndDriver()
                 end
                 ----------------------------------------------------------
@@ -389,10 +393,7 @@ Citizen.CreateThread(function()
                 if CanDrive == true then
 
                     SetVehicleHandbrake(CurrentPbus[1], false) -- hb off
-                    SetVehicleDoorsLocked(CurrentPbus[1], 2) -- locked                   
-                    if ClientDebug == true then 
-                        drawOnScreen2D('Depot: '..CurrentDepot[2].uid..'\nDFS:[ '..distancefromstart..' ]\nDTS:[ '..distancetostop..' ]\n@ '..sLimit..' Speed ', 255, 255, 255, 255, 0.45, 0.45, 0.6)
-                    end
+
                     ------ PRISON BUS 1
                     
                     if CurrentDepot[2].uid == 'prisonbus_1' then
