@@ -13,6 +13,6 @@ PBDMConf = {
     maxSpeed = 30.0,
     stopDistance = 1.0, -- how close to try getting to the location
     passengerWaitTime = 60 * 1000, -- 60 seconds.
-    WaitAfterDropoff = 30 * 1000 -- time before deleting after dropoff  
+    WaitAfterDropoff = 30 * 1000, -- time before deleting after dropoff  
     AIUpdateTimer = 60 * 1000 -- updates the ai every 60 sec.
 }
