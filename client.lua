@@ -160,7 +160,8 @@ function putplayerinseat(busid)
         if isfree == 1 then
             local playerPed = PlayerPedId()
             TaskEnterVehicle(playerPed, busid, 15000, j, 2.0, 1, 0)
-            TriggerServerEvent('pbdm:passentered', {busid})            
+            TriggerServerEvent('pbdm:passentered', {busid})
+            Citizen.Wait(5000)            
             AmInBus = true
             break
         end        
@@ -260,9 +261,11 @@ AddEventHandler('pbdm:makeclientpass', function(bId)
     PassengerZones[bId[2]]:onPlayerInOut(function(isPointInside, point, zone)
         if isPointInside then
             --
-            -- CurrentPbus = {}
-            -- CurrentPbus[1] = buspass
-            -- CurrentPbus[2] = bId[2]
+            if CurrentPbus == nil then
+                CurrentPbus = {}
+                CurrentPbus[1] = buspass
+                CurrentPbus[2] = bId[2]
+            end
             --
             putplayerinseat(buspass)
             if ClientDebug == true then
@@ -280,24 +283,19 @@ end)
 --
 RegisterNetEvent('pbdm:newbus')
 AddEventHandler('pbdm:newbus', function(bData)
-    -- if CurrentDriver == nil then
-        CurrentDriver = {}
-        CurrentDriver[1] = NetworkGetEntityFromNetworkId(bData[1]) -- set local ped id.
-        CurrentDriver[2] = bData[1] -- netid
-    -- end
+    CurrentDriver = {}
+    CurrentDriver[1] = NetworkGetEntityFromNetworkId(bData[1]) -- set local ped id.
+    CurrentDriver[2] = bData[1] -- netid
+    CurrentPbus = {}
+    CurrentPbus[1] = NetworkGetEntityFromNetworkId(bData[2])
+    CurrentPbus[2] = bData[2] -- netid
+    CurrentDepot = {}
+    CurrentDepot = bData[3]
     if ClientDebug == true then
         print('Storing Networked Driver [ '..CurrentDriver[1]..'/'..CurrentDriver[2]..' ]')
-    end    
-    -- if CurrentPbus == nil then
-        CurrentPbus = {}
-        CurrentPbus[1] = NetworkGetEntityFromNetworkId(bData[2])
-        CurrentPbus[2] = bData[2] -- netid
-    -- end
+    end
     if ClientDebug == true then
         print('Storing Networked Bus [ '..CurrentPbus[1]..'/'..CurrentPbus[2]..' ]')
-    end
-    if CurrentDepot == nil then
-        CurrentDepot = bData[3]
     end
     if ClientDebug == true then
         print('Storing Networked Depot []')
@@ -352,14 +350,13 @@ Citizen.CreateThread(function()
 		Citizen.Wait(0)
 		if NetworkIsPlayerActive(PlayerId()) then
             if CurrentPbus ~= nil then
-                
+
                 SetVehicleDoorsLocked(CurrentPbus[1], 1) --  unlocked
-                SetVehicleHandbrake(CurrentPbus[1], false) -- hb off
 
                 if AmInBus == true then
                     DisableControlAction(0, 75, true)  -- Disable exit vehicle
                     DisableControlAction(27, 75, true) -- Disable exit vehicle
-                    -- SetVehicleDoorsLocked(CurrentPbus[1], 2) -- locked     
+                    SetVehicleDoorsLocked(CurrentPbus[1], 2) -- locked     
                 end 
 
                 ----------------------------------------------------------              
